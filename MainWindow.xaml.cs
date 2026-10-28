@@ -1,4 +1,7 @@
 using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
@@ -8,14 +11,17 @@ namespace GoldDesk.Desktop;
 
 public partial class MainWindow : Window
 {
+    private static readonly HttpClient signalHttpClient = new() { BaseAddress = new Uri("https://tradersview.deriv.com") };
+    private static readonly HttpClient bridgeHealthClient = new() { BaseAddress = new Uri("http://127.0.0.1:8000"), Timeout = TimeSpan.FromSeconds(2) };
     private readonly GoldDeskService service;
     private readonly Mt5BridgeClient mt5Bridge = new();
+    private Process? mt5ServerProcess;
 
     private readonly DispatcherTimer liveTimer = new() { Interval = TimeSpan.FromSeconds(30) };
     private bool isRefreshing;
     private bool isInitialized;
     private bool isChangingTimeframe;
-    private string selectedTimeframe = "M30";
+    private string selectedTimeframe = "H1";
 
     public MainWindow() : this(new GoldDeskService()) { }
 
@@ -28,7 +34,11 @@ public partial class MainWindow : Window
         mt5Bridge.PriceReceived += OnMt5Price;
         liveTimer.Tick += async (_, _) => await RefreshMarketAsync(false);
         liveTimer.Start();
-        Closed += async (_, _) => await mt5Bridge.DisposeAsync();
+        Closed += async (_, _) =>
+        {
+            StopMt5Bridge();
+            await mt5Bridge.DisposeAsync();
+        };
     }
 
     public async Task InitializeAsync()
@@ -37,7 +47,7 @@ public partial class MainWindow : Window
         {
             ProviderBox.SelectedIndex = 0;
             SymbolBox.Text = "XAUUSD";
-            PriceUrlBox.Text = "MT5 bridge: http://localhost:8000";
+            PriceUrlBox.Text = "MT5 bridge: http://127.0.0.1:8000";
             TwelveDataKeyBox.Password = string.Empty;
             IntervalBox.Text = selectedTimeframe;
             FeedsBox.Text = string.Join(Environment.NewLine, service.Sources.Feeds.Select(x => x.Url));
@@ -66,7 +76,113 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ChangeSource_Click(object sender, RoutedEventArgs e) { SourcesTab.IsSelected = true; SourcesTab.Focus(); }
+    private async void StartMt5Bridge_Click(object sender, RoutedEventArgs e)
+    {
+        if (mt5ServerProcess is { HasExited: false })
+        {
+            PriceMeta.Text = "MT5 bridge вече работи на 127.0.0.1:8000";
+            if (!isInitialized)
+                await InitializeAsync();
+            return;
+        }
+
+        var bridgeDirectory = FindMt5BridgeDirectory();
+        if (bridgeDirectory is null)
+        {
+            MessageBox.Show("Не е намерена директорията mt5-bridge с pyproject.toml.", "MT5 bridge", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            ChangeSourceButton.IsEnabled = false;
+            ChangeSourceButton.Content = "Стартирам…";
+            mt5ServerProcess = Process.Start(new ProcessStartInfo
+            {
+                FileName = "uv",
+                Arguments = "run mt5-bridge server --host 127.0.0.1 --port 8000",
+                WorkingDirectory = bridgeDirectory,
+                UseShellExecute = true,
+                CreateNoWindow = false,
+                WindowStyle = ProcessWindowStyle.Normal
+            });
+
+            PriceMeta.Text = "Стартирам MT5 bridge на 127.0.0.1:8000…";
+            ChartMetaText.Text = "MT5 bridge server · uv run · 127.0.0.1:8000";
+
+            if (!await WaitForBridgeAsync())
+            {
+                ChartMetaText.Text = "MT5 bridge не отговори на http://127.0.0.1:8000/health";
+                PriceMeta.Text = "Bridge server-ът не е достъпен";
+                return;
+            }
+
+            await InitializeAsync();
+            ChangeSourceButton.Content = isInitialized ? "Bridge активен" : "Повтори bridge";
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"MT5 bridge не може да бъде стартиран. Проверете дали uv е инсталиран и е в PATH.\n\n{ex.Message}", "MT5 bridge", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            ChangeSourceButton.IsEnabled = true;
+            if (ChangeSourceButton.Content?.ToString() == "Стартирам…")
+                ChangeSourceButton.Content = "Стартирай bridge";
+        }
+    }
+
+    private static async Task<bool> WaitForBridgeAsync()
+    {
+        for (var attempt = 0; attempt < 20; attempt++)
+        {
+            try
+            {
+                using var response = await bridgeHealthClient.GetAsync("/health");
+                if (response.IsSuccessStatusCode) return true;
+            }
+            catch (HttpRequestException) { }
+            catch (TaskCanceledException) { }
+
+            await Task.Delay(500);
+        }
+
+        return false;
+    }
+
+    private static string? FindMt5BridgeDirectory()
+    {
+        foreach (var startPath in new[] { AppContext.BaseDirectory, Directory.GetCurrentDirectory() })
+        {
+            var directory = new DirectoryInfo(startPath);
+            while (directory is not null)
+            {
+                var candidate = Path.Combine(directory.FullName, "mt5-bridge");
+                if (File.Exists(Path.Combine(candidate, "pyproject.toml")))
+                    return candidate;
+                directory = directory.Parent;
+            }
+        }
+
+        return null;
+    }
+
+    private void StopMt5Bridge()
+    {
+        if (mt5ServerProcess is not { HasExited: false }) return;
+
+        try
+        {
+            mt5ServerProcess.Kill(entireProcessTree: true);
+            mt5ServerProcess.Dispose();
+            mt5ServerProcess = null;
+        }
+        catch
+        {
+            // Процесът може вече да е приключил между проверката и Kill().
+        }
+    }
+
     private async void Refresh_Click(object sender, RoutedEventArgs e) => await RefreshMarketAsync(true);
 
     private async Task RefreshMarketAsync(bool includeNews)
@@ -94,7 +210,7 @@ public partial class MainWindow : Window
 
     private void UpdatePrice(GoldPrice price)
     {
-        PriceText.Text = price.Price.ToString("0.00");
+ 
         PriceMeta.Text = $"{price.Symbol} · {price.Source} · {price.ChangePct:+0.00;-0.00;0.00}%";
         var snapshot = service.MarketSnapshot;
         OpenText.Text = snapshot?.Open.ToString("0.00") ?? "--";
@@ -223,6 +339,121 @@ public partial class MainWindow : Window
     }
 
     private void Logout_Click(object sender, RoutedEventArgs e) { service.Logout(); var loginWindow = new LoginWindow(service); Application.Current.MainWindow = loginWindow; loginWindow.Show(); Close(); }
+
+    private async void AnalyzeSignal_Click(object sender, RoutedEventArgs e)
+    {
+        if (SignalTimeframeBox.SelectedItem is not ComboBoxItem item || string.IsNullOrWhiteSpace(item.Content?.ToString()))
+            return;
+
+        var timeframe = item.Content.ToString()!;
+        var requestUrl = $"/api/analysis/signal/gold?timeframe={Uri.EscapeDataString(timeframe)}";
+        AnalyzeSignalButton.IsEnabled = false;
+        AnalyzeSignalButton.Content = "Зареждам…";
+        SignalRequestText.Text = $"GET https://tradersview.deriv.com{requestUrl}";
+        SignalResponseText.Text = "Изчакване на response…";
+        SignalSummaryText.Text = "--";
+
+        try
+        {
+            using var response = await signalHttpClient.GetAsync(requestUrl);
+            var content = await response.Content.ReadAsStringAsync();
+            SignalResponseText.Text = FormatSignalResponse(content);
+            SignalRequestText.Text = $"{(int)response.StatusCode} {response.ReasonPhrase} · timeframe={timeframe}";
+            UpdateSignalFields(content);
+
+            if (!response.IsSuccessStatusCode)
+                SignalSummaryText.Text = $"Заявката върна HTTP {(int)response.StatusCode}.";
+        }
+        catch (Exception ex)
+        {
+            SignalRequestText.Text = $"Грешка · timeframe={timeframe}";
+            SignalResponseText.Text = ex.Message;
+            SignalSummaryText.Text = "Неуспешна заявка към TradersView.";
+        }
+        finally
+        {
+            AnalyzeSignalButton.IsEnabled = true;
+            AnalyzeSignalButton.Content = "Анализирай";
+        }
+    }
+
+    private void UpdateSignalFields(string content)
+    {
+        SignalActionText.Text = "--";
+        SignalConfidenceText.Text = "--";
+        SignalEntryText.Text = "--";
+        SignalStopLossText.Text = "--";
+        SignalTakeProfitText.Text = "--";
+        SignalSummaryText.Text = "--";
+
+        try
+        {
+            using var document = JsonDocument.Parse(content);
+            var root = document.RootElement;
+            SignalActionText.Text = FindJsonValue(root, "signal", "action", "direction", "recommendation") ?? "--";
+            SignalConfidenceText.Text = FindJsonValue(root, "confidence", "confidencePercent", "probability") ?? "--";
+            SignalEntryText.Text = FindJsonValue(root, "entry", "entryPrice", "open") ?? "--";
+            SignalStopLossText.Text = FindJsonValue(root, "stopLoss", "stop_loss", "sl") ?? "--";
+            SignalTakeProfitText.Text = FindJsonValue(root, "takeProfit", "take_profit", "tp", "target") ?? "--";
+            SignalSummaryText.Text = FindJsonValue(root, "summary", "description", "reason", "analysis") ?? "Получен JSON response. Вижте пълния response по-долу.";
+        }
+        catch (JsonException)
+        {
+            SignalSummaryText.Text = string.IsNullOrWhiteSpace(content) ? "Празен response." : content.Trim();
+        }
+    }
+
+    private static string FormatSignalResponse(string content)
+    {
+        if (string.IsNullOrWhiteSpace(content)) return "Празен response.";
+        try
+        {
+            using var document = JsonDocument.Parse(content);
+            return JsonSerializer.Serialize(document.RootElement, new JsonSerializerOptions { WriteIndented = true });
+        }
+        catch (JsonException)
+        {
+            return content;
+        }
+    }
+
+    private static string? FindJsonValue(JsonElement element, params string[] names)
+    {
+        if (element.ValueKind == JsonValueKind.Object)
+        {
+            foreach (var property in element.EnumerateObject())
+            {
+                if (names.Any(name => string.Equals(name, property.Name, StringComparison.OrdinalIgnoreCase)))
+                    return JsonElementToDisplayString(property.Value);
+            }
+
+            foreach (var property in element.EnumerateObject())
+            {
+                var nested = FindJsonValue(property.Value, names);
+                if (nested is not null) return nested;
+            }
+        }
+        else if (element.ValueKind == JsonValueKind.Array)
+        {
+            foreach (var item in element.EnumerateArray())
+            {
+                var nested = FindJsonValue(item, names);
+                if (nested is not null) return nested;
+            }
+        }
+
+        return null;
+    }
+
+    private static string JsonElementToDisplayString(JsonElement element) => element.ValueKind switch
+    {
+        JsonValueKind.String => element.GetString() ?? "--",
+        JsonValueKind.Number => element.ToString(),
+        JsonValueKind.True => "true",
+        JsonValueKind.False => "false",
+        JsonValueKind.Null => "--",
+        _ => element.GetRawText()
+    };
 
     private void Render()
     {

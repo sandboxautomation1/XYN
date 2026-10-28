@@ -23,4 +23,5 @@ E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\refint\XYN.dll
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.pdb
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.genruntimeconfig.cache
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\ref\XYN.dll
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.sourcelink.json
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.csproj.Up2Date

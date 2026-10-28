@@ -3,7 +3,7 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:local="clr-namespace:GoldDesk.Desktop"
         Title="Gold Desk · XAU/USD" Width="1440" Height="960" MinWidth="1120" MinHeight="760"
-        WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Background="{StaticResource BackgroundBrush}">
     <Grid Margin="22">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -18,14 +18,12 @@
                 <TextBlock x:Name="LastUpdatedText" Text="Свързване с market data…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                <StackPanel Margin="0,0,20,0" HorizontalAlignment="Right">
-                    <TextBlock x:Name="PriceText" Foreground="{StaticResource GoldBrush}" Text="--" FontFamily="Consolas" FontSize="24" HorizontalAlignment="Right"/>
+                <StackPanel Margin="0,0,,0" Height="19">
                     <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Right"/>
                 </StackPanel>
-                <Button x:Name="RefreshButton" Content="Обнови анализа" Click="Refresh_Click"/>
-                <Button x:Name="ChangeSourceButton" Content="Източник" Click="ChangeSource_Click" Background="Transparent" Foreground="{StaticResource GoldBrush}"/>
-                <Button Content="Изход" Click="Logout_Click" Background="Transparent" Foreground="{StaticResource MutedBrush}"/>
-            </StackPanel>
+                <Button x:Name="RefreshButton" Content="Обнови Анализа" Click="Refresh_Click"/>
+                <Button x:Name="ChangeSourceButton" Content="Стартирай Bridge" Click="StartMt5Bridge_Click"/>
+                <Button Content="Изход" Click="Logout_Click" Background="Transparent" Foreground="{StaticResource MutedBrush}"/>ckPanel>
         </DockPanel>
         <Grid Grid.Row="1" Margin="0,0,0,12">
             <Grid.ColumnDefinitions>
@@ -115,7 +113,10 @@
                 <StackPanel>
                     <TextBlock Text="PRICE RANGES" Style="{StaticResource CardLabelStyle}"/>
                     <Grid Margin="0,5,0,0">
-                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Margin="0,0,6,0">
                             <TextBlock Text="DAILY" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
                             <TextBlock x:Name="DailyRangeText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="16"/>
@@ -135,7 +136,10 @@
                 <StackPanel>
                     <TextBlock Text="TECHNICAL INDICATORS" Style="{StaticResource CardLabelStyle}"/>
                     <Grid Margin="0,5,0,0">
-                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="SMA (20)" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
                             <TextBlock x:Name="SmaText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14"/>
@@ -208,6 +212,70 @@
                             <TextBox x:Name="ManualBox" AcceptsReturn="True" Height="150" TextWrapping="Wrap"/>
                             <Button Content="Анализирай" Click="Manual_Click" Width="130" HorizontalAlignment="Left"/>
                         </StackPanel>
+                    </TabItem>
+                    <TabItem Header="Сигнал" Foreground="Black">
+                        <ScrollViewer Padding="4" VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="TRADERSVIEW · GOLD SIGNAL" Style="{StaticResource CardLabelStyle}"/>
+                                <TextBlock Text="Изберете timeframe и заявете актуален сигнал за златото." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel Width="130" Margin="0,0,10,0">
+                                        <TextBlock Text="Timeframe" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                        <ComboBox x:Name="SignalTimeframeBox" SelectedIndex="2">
+                                            <ComboBoxItem Content="5m"/>
+                                            <ComboBoxItem Content="15m"/>
+                                            <ComboBoxItem Content="1h"/>
+                                            <ComboBoxItem Content="1d"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <Button x:Name="AnalyzeSignalButton" Content="Анализирай" Click="AnalyzeSignal_Click" Width="130" Height="36" VerticalAlignment="Bottom"/>
+                                </StackPanel>
+                                <TextBlock x:Name="SignalRequestText" Text="Готово за заявка" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,2,0,14"/>
+                                <Grid Margin="0,0,0,12">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="SIGNAL" Style="{StaticResource CardLabelStyle}"/>
+                                            <TextBlock x:Name="SignalActionText" Text="--" Foreground="{StaticResource GoldBrush}" FontSize="18" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="1" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="CONFIDENCE" Style="{StaticResource CardLabelStyle}"/>
+                                            <TextBlock x:Name="SignalConfidenceText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="18"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="2" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="ENTRY" Style="{StaticResource CardLabelStyle}"/>
+                                            <TextBlock x:Name="SignalEntryText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="16"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="3" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
+                                        <StackPanel>
+                                            <TextBlock Text="STOP LOSS" Style="{StaticResource CardLabelStyle}"/>
+                                            <TextBlock x:Name="SignalStopLossText" Text="--" Foreground="{StaticResource BearBrush}" FontFamily="Consolas" FontSize="16"/>
+                                        </StackPanel>
+                                    </Border>
+                                    <Border Grid.Column="4" Style="{StaticResource DashboardCardStyle}">
+                                        <StackPanel>
+                                            <TextBlock Text="TAKE PROFIT" Style="{StaticResource CardLabelStyle}"/>
+                                            <TextBlock x:Name="SignalTakeProfitText" Text="--" Foreground="{StaticResource BullBrush}" FontFamily="Consolas" FontSize="16"/>
+                                        </StackPanel>
+                                    </Border>
+                                </Grid>
+                                <TextBlock Text="Обобщение" Style="{StaticResource CardLabelStyle}"/>
+                                <TextBox x:Name="SignalSummaryText" Text="--" IsReadOnly="True" TextWrapping="Wrap" MinHeight="48"/>
+                                <TextBlock Text="Пълен response" Style="{StaticResource CardLabelStyle}" Margin="0,8,0,0"/>
+                                <TextBox x:Name="SignalResponseText" Text="Няма получен response." IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="180" FontFamily="Consolas"/>
+                            </StackPanel>
+                        </ScrollViewer>
                     </TabItem>
                     <TabItem x:Name="SourcesTab" Header="Източници" Foreground="Black">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
