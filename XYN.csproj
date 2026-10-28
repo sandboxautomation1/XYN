@@ -7,10 +7,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>XYN</AssemblyName>
     <RootNamespace>XYN</RootNamespace>
-    <UseWindowsForms>True</UseWindowsForms>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="windows\" />
-  </ItemGroup>
 </Project>
 

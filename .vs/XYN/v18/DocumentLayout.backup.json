@@ -7,7 +7,48 @@
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\KamboJah\\AppData\\Local\\Temp\\.vsdbgsrc\\8646a45aed9b4ef7416dfd57c3236af05a7ffe9a232b7b6c9cfed2434fb72a85\\ResourcePart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\technicalindicatorcalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:technicalindicatorcalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mt5bridgeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mt5bridgeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\marketchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:marketchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mt5marketdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mt5marketdataprovider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\localsignalcalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:localsignalcalculator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\endpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:endpoints.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,8 +58,68 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "App.xaml",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-26T10:06:30.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TechnicalIndicatorCalculator.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\TechnicalIndicatorCalculator.cs",
+              "RelativeDocumentMoniker": "TechnicalIndicatorCalculator.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\TechnicalIndicatorCalculator.cs",
+              "RelativeToolTip": "TechnicalIndicatorCalculator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T10:05:51.511Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "LocalSignalCalculator.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\LocalSignalCalculator.cs",
+              "RelativeDocumentMoniker": "LocalSignalCalculator.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\LocalSignalCalculator.cs",
+              "RelativeToolTip": "LocalSignalCalculator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T15:25:24.258Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "MarketChart.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MarketChart.cs",
+              "RelativeDocumentMoniker": "MarketChart.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MarketChart.cs",
+              "RelativeToolTip": "MarketChart.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T15:26:05.096Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Mt5BridgeClient.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeDocumentMoniker": "Mt5BridgeClient.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeToolTip": "Mt5BridgeClient.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAIwCIAAABkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T05:28:19.473Z"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -28,19 +129,79 @@
               "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-28T03:31:15.855Z",
+              "WhenOpened": "2026-10-23T07:54:09.504Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ResourcePart.cs",
-              "DocumentMoniker": "C:\\Users\\KamboJah\\AppData\\Local\\Temp\\.vsdbgsrc\\8646a45aed9b4ef7416dfd57c3236af05a7ffe9a232b7b6c9cfed2434fb72a85\\ResourcePart.cs",
-              "ToolTip": "C:\\Users\\KamboJah\\AppData\\Local\\Temp\\.vsdbgsrc\\8646a45aed9b4ef7416dfd57c3236af05a7ffe9a232b7b6c9cfed2434fb72a85\\ResourcePart.cs [Read Only]",
-              "ViewState": "AgIAACQAAAAAAAAAAAAYwCcAAAAEAAAAAQAAAA==",
+              "Title": "LoginWindow.xaml",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\LoginWindow.xaml",
+              "RelativeDocumentMoniker": "LoginWindow.xaml",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\LoginWindow.xaml",
+              "RelativeToolTip": "LoginWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-26T10:06:31.906Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Models.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Models.cs",
+              "RelativeDocumentMoniker": "Models.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Models.cs",
+              "RelativeToolTip": "Models.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-28T03:30:19.046Z",
-              "EditorCaption": " [Read Only]"
+              "WhenOpened": "2026-10-26T10:06:40.152Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Services.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Services.cs",
+              "RelativeDocumentMoniker": "Services.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Services.cs",
+              "RelativeToolTip": "Services.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T15:26:02.839Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Mt5MarketDataProvider.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5MarketDataProvider.cs",
+              "RelativeDocumentMoniker": "Mt5MarketDataProvider.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Mt5MarketDataProvider.cs",
+              "RelativeToolTip": "Mt5MarketDataProvider.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAA5wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T15:25:51.04Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Endpoints.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Endpoints.cs",
+              "RelativeDocumentMoniker": "Endpoints.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Endpoints.cs",
+              "RelativeToolTip": "Endpoints.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T15:26:09.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAwEEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T02:59:43.678Z"
             }
           ]
         }

@@ -3,12 +3,16 @@ E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.deps.json
 E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.runtimeconfig.json
 E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.dll
 E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.pdb
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\LoginWindow.baml
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\Styles.baml
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\App.baml
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\LoginWindow.g.cs
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\MainWindow.g.cs
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\App.g.cs
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\GeneratedInternalTypeHelper.g.cs
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN_MarkupCompile.cache
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN_MarkupCompile.lref
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\MainWindow.baml
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.g.resources
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.GeneratedMSBuildEditorConfig.editorconfig
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.AssemblyInfoInputs.cache
@@ -19,7 +23,4 @@ E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\refint\XYN.dll
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.pdb
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.genruntimeconfig.cache
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\ref\XYN.dll
-E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\LoginWindow.baml
-E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\LoginWindow.g.cs
-E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\MainWindow.g.cs
-E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\MainWindow.baml
+E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.csproj.Up2Date
