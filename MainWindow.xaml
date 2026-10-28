@@ -18,12 +18,13 @@
                 <TextBlock x:Name="LastUpdatedText" Text="Свързване с market data…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                <StackPanel Margin="0,0,,0" Height="19">
+                <StackPanel Margin="0,0,20,0" Height="19">
                     <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Right"/>
                 </StackPanel>
                 <Button x:Name="RefreshButton" Content="Обнови Анализа" Click="Refresh_Click"/>
                 <Button x:Name="ChangeSourceButton" Content="Стартирай Bridge" Click="StartMt5Bridge_Click"/>
-                <Button Content="Изход" Click="Logout_Click" Background="Transparent" Foreground="{StaticResource MutedBrush}"/>ckPanel>
+                <Button Content="Изход" Click="Logout_Click" Background="Transparent" Foreground="{StaticResource MutedBrush}"/>
+            </StackPanel>
         </DockPanel>
         <Grid Grid.Row="1" Margin="0,0,0,12">
             <Grid.ColumnDefinitions>
@@ -221,7 +222,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <StackPanel Width="130" Margin="0,0,10,0">
                                         <TextBlock Text="Timeframe" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
-                                        <ComboBox x:Name="SignalTimeframeBox" SelectedIndex="2">
+                                        <ComboBox x:Name="SignalTimeframeBox" Foreground="Black" SelectedIndex="2">
                                             <ComboBoxItem Content="5m"/>
                                             <ComboBoxItem Content="15m"/>
                                             <ComboBoxItem Content="1h"/>

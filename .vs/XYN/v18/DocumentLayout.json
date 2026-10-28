@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "E:\\Projects_MT5\\XYN\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\marketchart.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -66,7 +66,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -78,12 +78,11 @@
               "RelativeToolTip": "Mt5BridgeClient.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAQwCoAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T05:28:19.473Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T05:28:19.473Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
@@ -115,8 +114,7 @@
               "RelativeToolTip": "MarketChart.cs",
               "ViewState": "AgIAAD4AAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T15:26:05.096Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T15:26:05.096Z"
             },
             {
               "$type": "Document",
@@ -128,18 +126,17 @@
               "RelativeToolTip": "Mt5MarketDataProvider.cs",
               "ViewState": "AgIAACsAAAAAAAAAAAAywBgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T15:25:51.04Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T15:25:51.04Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAACYBAAAAAAAAAAAcwNQAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAACcBAAAAAAAAAAAIwNQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-23T02:59:43.678Z",
               "EditorCaption": ""
@@ -154,8 +151,7 @@
               "RelativeToolTip": "LocalSignalCalculator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T15:25:24.258Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T15:25:24.258Z"
             },
             {
               "$type": "Document",
@@ -167,8 +163,7 @@
               "RelativeToolTip": "TechnicalIndicatorCalculator.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-26T10:05:51.511Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-26T10:05:51.511Z"
             },
             {
               "$type": "Document",
@@ -180,8 +175,7 @@
               "RelativeToolTip": "Endpoints.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T15:26:09.863Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T15:26:09.863Z"
             },
             {
               "$type": "Document",
@@ -192,8 +186,7 @@
               "ToolTip": "E:\\Projects_MT5\\XYN\\XYN.csproj",
               "RelativeToolTip": "XYN.csproj",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-10-28T08:04:30.239Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-28T08:04:30.239Z"
             },
             {
               "$type": "Document",
@@ -205,8 +198,7 @@
               "RelativeToolTip": "Services.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T15:26:02.839Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T15:26:02.839Z"
             },
             {
               "$type": "Document",
@@ -217,8 +209,7 @@
               "ToolTip": "E:\\Projects_MT5\\XYN\\LoginWindow.xaml",
               "RelativeToolTip": "LoginWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-26T10:06:31.906Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-26T10:06:31.906Z"
             },
             {
               "$type": "Document",
