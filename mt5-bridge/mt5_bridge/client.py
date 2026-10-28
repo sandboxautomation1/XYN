@@ -1,0 +1,265 @@
+import urllib.parse
+import httpx
+from typing import List, Dict, Optional, Any
+
+class BridgeClient:
+    def __init__(self, base_url: str = "http://localhost:8000"):
+        self.base_url = base_url.rstrip("/")
+
+    def get_rates(self, symbol: str, timeframe: str = "M1", count: int = 1000) -> List[Dict[str, Any]]:
+        url = f"{self.base_url}/rates/{urllib.parse.quote(symbol, safe='')}"
+        params = {"timeframe": timeframe, "count": count}
+        try:
+            resp = httpx.get(url, params=params, timeout=10.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching rates: {e}")
+            return []
+
+    def get_rates_range(self, symbol: str, timeframe: str, start: int, end: int) -> List[Dict[str, Any]]:
+        """
+        日付範囲を指定して履歴レートを取得する。
+        
+        Args:
+            symbol: シンボル名 (例: "XAUUSD")
+            timeframe: 時間足 (例: "M1", "H1")
+            start: 開始タイムスタンプ (UTC)
+            end: 終了タイムスタンプ (UTC)
+            
+        Returns:
+            レートデータの辞書リスト
+        """
+        url = f"{self.base_url}/rates_range/{urllib.parse.quote(symbol, safe='')}"
+        params = {"timeframe": timeframe, "start": start, "end": end}
+        try:
+            resp = httpx.get(url, params=params, timeout=30.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching rates range: {e}")
+            return []
+
+    def get_ticks_from(
+        self,
+        symbol: str,
+        start: int,
+        count: int = 1000,
+        flags: str = "ALL"
+    ) -> List[Dict[str, Any]]:
+        """
+        指定日時から過去ティックデータを取得する。
+        
+        Args:
+            symbol: シンボル名 (例: "XAUUSD")
+            start: 開始タイムスタンプ (UTC)
+            count: 取得するティック数
+            flags: ティックの種類 ("ALL", "INFO", "TRADE")
+            
+        Returns:
+            ティックデータの辞書リスト
+        """
+        url = f"{self.base_url}/ticks_from/{urllib.parse.quote(symbol, safe='')}"
+        params = {"start": start, "count": count, "flags": flags}
+        try:
+            # ティックデータは量が多い可能性があるためタイムアウトを長めに設定
+            resp = httpx.get(url, params=params, timeout=60.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching ticks from: {e}")
+            return []
+
+    def get_ticks_range(
+        self,
+        symbol: str,
+        start: int,
+        end: int,
+        flags: str = "ALL"
+    ) -> List[Dict[str, Any]]:
+        """
+        指定日時範囲の過去ティックデータを取得する。
+        
+        Args:
+            symbol: シンボル名 (例: "XAUUSD")
+            start: 開始タイムスタンプ (UTC)
+            end: 終了タイムスタンプ (UTC)
+            flags: ティックの種類 ("ALL", "INFO", "TRADE")
+            
+        Returns:
+            ティックデータの辞書リスト
+        """
+        url = f"{self.base_url}/ticks_range/{urllib.parse.quote(symbol, safe='')}"
+        params = {"start": start, "end": end, "flags": flags}
+        try:
+            # ティックデータは量が多い可能性があるためタイムアウトを長めに設定
+            resp = httpx.get(url, params=params, timeout=120.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching ticks range: {e}")
+            return []
+
+    def get_tick(self, symbol: str) -> Optional[Dict[str, Any]]:
+        url = f"{self.base_url}/tick/{urllib.parse.quote(symbol, safe='')}"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching tick: {e}")
+            return None
+
+    def get_book(self, symbol: str) -> List[Dict[str, Any]]:
+        """Get current market depth (Level 2)."""
+        url = f"{self.base_url}/book/{urllib.parse.quote(symbol, safe='')}"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching market book: {e}")
+            return []
+    
+    def get_account_info(self) -> Optional[Dict[str, Any]]:
+        url = f"{self.base_url}/account"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching account info: {e}")
+            return None
+    
+    def get_positions(self, symbols: Optional[List[str]] = None, magic: Optional[int] = None) -> List[Dict[str, Any]]:
+        url = f"{self.base_url}/positions"
+        params = {}
+        if symbols:
+            params["symbols"] = ",".join(symbols)
+        if magic is not None:
+            params["magic"] = magic
+
+        try:
+            resp = httpx.get(url, params=params, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching positions: {e}")
+            return []
+    
+    def get_symbols(self) -> List[str]:
+        """Get list of all available symbols."""
+        url = f"{self.base_url}/symbols"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching symbols: {e}")
+            return []
+    
+    def check_health(self) -> Dict[str, Any]:
+        url = f"{self.base_url}/health"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            return {"status": "error", "detail": str(e)}
+
+    def get_version(self) -> Dict[str, Any]:
+        """
+        現在稼働中の mt5-bridge サーバーのバージョンを取得します。
+
+        Returns:
+            バージョン情報を含む辞書
+        """
+        url = f"{self.base_url}/version"
+        try:
+            resp = httpx.get(url, timeout=5.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            return {"version": "unknown", "detail": str(e)}
+
+    def send_order(self, symbol: str, order_type: str, volume: float, sl: float = 0.0, tp: float = 0.0, comment: str = "", magic: int = 123456) -> Dict[str, Any]:
+        url = f"{self.base_url}/order"
+        data = {
+            "symbol": symbol,
+            "type": order_type,
+            "volume": volume,
+            "sl": sl,
+            "tp": tp,
+            "comment": comment,
+            "magic": magic
+        }
+        try:
+            resp = httpx.post(url, json=data, timeout=10.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            return {"status": "error", "detail": str(e)}
+
+    def close_position(self, ticket: int) -> Dict[str, Any]:
+        url = f"{self.base_url}/close"
+        data = {"ticket": ticket}
+        try:
+            resp = httpx.post(url, json=data, timeout=10.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            return {"status": "error", "detail": str(e)}
+
+    def modify_position(self, ticket: int, sl: Optional[float] = None, tp: Optional[float] = None) -> Dict[str, Any]:
+        url = f"{self.base_url}/modify"
+        data = {
+            "ticket": ticket,
+            "sl": sl,
+            "tp": tp,
+            "update_sl": sl is not None,
+            "update_tp": tp is not None
+        }
+        try:
+            resp = httpx.post(url, json=data, timeout=10.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            return {"status": "error", "detail": str(e)}
+
+    def get_history_deals(
+        self,
+        position: Optional[int] = None,
+        ticket: Optional[int] = None,
+        start: Optional[int] = None,
+        end: Optional[int] = None
+    ) -> List[Dict[str, Any]]:
+        """
+        取引履歴（約定履歴）を取得する。
+
+        Args:
+            position: ポジションIDによるフィルタ
+            ticket: ディール（取引）チケット番号によるフィルタ
+            start: 開始タイムスタンプ (UTC)
+            end: 終了タイムスタンプ (UTC)
+
+        Returns:
+            約定データの辞書リスト
+        """
+        url = f"{self.base_url}/history/deals"
+        params = {}
+        if position is not None:
+            params["position"] = position
+        if ticket is not None:
+            params["ticket"] = ticket
+        if start is not None:
+            params["start"] = start
+        if end is not None:
+            params["end"] = end
+
+        try:
+            resp = httpx.get(url, params=params, timeout=30.0)
+            resp.raise_for_status()
+            return resp.json()
+        except httpx.HTTPError as e:
+            print(f"Error fetching history deals: {e}")
+            return []

@@ -1,0 +1,236 @@
+<Window x:Class="GoldDesk.Desktop.MainWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:local="clr-namespace:GoldDesk.Desktop"
+        Title="Gold Desk · XAU/USD" Width="1440" Height="960" MinWidth="1120" MinHeight="760"
+        WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}">
+    <Grid Margin="22">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.Row="0" Margin="0,0,0,18">
+            <StackPanel DockPanel.Dock="Left">
+                <TextBlock Text="GOLD MARKET DASHBOARD" Foreground="{StaticResource MutedBrush}" FontSize="11" FontWeight="SemiBold"/>
+                <TextBlock Text="XAU/USD" Foreground="{StaticResource GoldBrush}" FontSize="30" FontFamily="Georgia"/>
+                <TextBlock x:Name="LastUpdatedText" Text="Свързване с market data…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Margin="0,0,20,0" HorizontalAlignment="Right">
+                    <TextBlock x:Name="PriceText" Foreground="{StaticResource GoldBrush}" Text="--" FontFamily="Consolas" FontSize="24" HorizontalAlignment="Right"/>
+                    <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Right"/>
+                </StackPanel>
+                <Button x:Name="RefreshButton" Content="Обнови анализа" Click="Refresh_Click"/>
+                <Button x:Name="ChangeSourceButton" Content="Източник" Click="ChangeSource_Click" Background="Transparent" Foreground="{StaticResource GoldBrush}"/>
+                <Button Content="Изход" Click="Logout_Click" Background="Transparent" Foreground="{StaticResource MutedBrush}"/>
+            </StackPanel>
+        </DockPanel>
+        <Grid Grid.Row="1" Margin="0,0,0,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="LIVE PRICE" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="CloseText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="25" FontWeight="Bold"/>
+                    <TextBlock Text="XAU / USD" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="OPEN" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="OpenText" Text="--" Foreground="{StaticResource GoldBrush}"  FontFamily="Consolas" FontSize="22"/>
+                    <TextBlock Text="текуща сесия" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="HIGH" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="HighText" Text="--" Foreground="{StaticResource BullBrush}" FontFamily="Consolas" FontSize="22"/>
+                    <TextBlock Text="OHLC high" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="LOW" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="LowText" Text="--" Foreground="{StaticResource BearBrush}" FontFamily="Consolas" FontSize="22"/>
+                    <TextBlock Text="OHLC low" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Style="{StaticResource DashboardCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="LOCAL SIGNAL" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="CurrentSignalText" Text="ИЗЧАКАЙ" Foreground="{StaticResource HoldBrush}" FontFamily="Consolas" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock x:Name="SignalMeta" Text="--" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Margin="0,0,8,0">
+                <StackPanel>
+                    <TextBlock Text="PRICE PREDICTION" Style="{StaticResource CardLabelStyle}"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="0,0,6,0">
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock Text="SHORT-TERM " Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
+                                </DockPanel>
+                                <TextBlock Text="Следващите 24 часа" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
+                                <TextBlock x:Name="ShortTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="ShortTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="ShortTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="1" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="6,0,0,0">
+                            <StackPanel>
+                                <DockPanel>
+                                    <TextBlock Text="LONG-TERM" Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
+                                </DockPanel>
+                                <TextBlock Text="Следващата седмица" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
+                                <TextBlock x:Name="LongTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="LongTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="LongTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="0,0,6,0">
+                <StackPanel>
+                    <TextBlock Text="PRICE RANGES" Style="{StaticResource CardLabelStyle}"/>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                            <TextBlock Text="DAILY" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock x:Name="DailyRangeText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="16"/>
+                            <TextBlock Text="24 часа" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
+                            <TextBlock x:Name="DailyAverageText" Text="Средно: --" Foreground="{StaticResource TextBrush}" FontSize="10" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                            <TextBlock Text="WEEKLY" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock x:Name="WeeklyRangeText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="16"/>
+                            <TextBlock Text="следващата седмица" Foreground="{StaticResource MutedBrush}" FontSize="10" TextWrapping="Wrap"/>
+                            <TextBlock x:Name="WeeklyAverageText" Text="Средно: --" Foreground="{StaticResource TextBrush}" FontSize="10" Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="0,0,6,0">
+                <StackPanel>
+                    <TextBlock Text="TECHNICAL INDICATORS" Style="{StaticResource CardLabelStyle}"/>
+                    <Grid Margin="0,5,0,0">
+                        <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition/></Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="SMA (20)" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
+                            <TextBlock x:Name="SmaText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14"/>
+                            <TextBlock Text="RSI (14)" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="RsiText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Text="MACD" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
+                            <TextBlock x:Name="MacdText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="14"/>
+                            <TextBlock Text="BOLLINGER (20, 2)" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
+                            <TextBlock x:Name="BollingerText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="11" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Style="{StaticResource DashboardCardStyle}">
+                <StackPanel>
+                    <TextBlock Text="CONFIDENCE" Style="{StaticResource CardLabelStyle}"/>
+                    <TextBlock x:Name="ConfidenceText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="22"/>
+                    <TextBlock Text="локален технически анализ" Foreground="{StaticResource MutedBrush}" FontSize="11" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Padding="14">
+                <TabControl SelectionChanged="TabControl_SelectionChanged">
+                    <TabItem Header="Графика" Foreground="Black">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <DockPanel Margin="0,0,0,8">
+                                <StackPanel DockPanel.Dock="Left">
+                                    <TextBlock Text="XAU/USD · OHLC CANDLES" Style="{StaticResource CardLabelStyle}"/>
+                                    <TextBlock x:Name="ChartMetaText" Text="Зареждане на пазарните данни…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                </StackPanel>
+                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <TextBlock Text="Период" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                    <ComboBox x:Name="TimeframeBox" Foreground="Black" Width="78" SelectionChanged="TimeframeBox_SelectionChanged">
+                                        <ComboBoxItem Content="M1"/>
+                                        <ComboBoxItem Content="M5"/>
+                                        <ComboBoxItem Content="M15"/>
+                                        <ComboBoxItem Content="M30" IsSelected="True"/>
+                                        <ComboBoxItem Content="H1"/>
+                                        <ComboBoxItem Content="H4"/>
+                                    </ComboBox>
+                                    <TextBlock Text="зелено · ръст    червено · спад" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                            <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="2">
+                                <local:MarketChart x:Name="PriceChart"/>
+                            </Border>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Брифинг" Foreground="Black" >
+                        <ScrollViewer Padding="4">
+                            <TextBlock x:Name="BriefingText" TextWrapping="Wrap" FontSize="14" LineHeight="24" Background="#FF302D26" Foreground="{StaticResource GoldBrush}"/>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem Header="Новини" Foreground="Black">
+                        <ListBox x:Name="NewsList" BorderThickness="0" Background="#FF302D26" Foreground="{StaticResource GoldBrush}"/>
+                    </TabItem>
+                    <TabItem Header="Анализ" Foreground="Black">
+                        <StackPanel Margin="8">
+                            <TextBlock Text="Поставете линк към статия или текст на новина…" Foreground="{StaticResource MutedBrush}"/>
+                            <TextBox x:Name="ManualBox" AcceptsReturn="True" Height="150" TextWrapping="Wrap"/>
+                            <Button Content="Анализирай" Click="Manual_Click" Width="130" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </TabItem>
+                    <TabItem x:Name="SourcesTab" Header="Източници" Foreground="Black">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="Пазарни данни" FontWeight="SemiBold"/>
+                                <TextBlock Text="MT5 terminal · единствен източник за live price, bid/ask, OHLC, история и технически показатели" TextWrapping="Wrap" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                <ComboBox x:Name="ProviderBox" Foreground="Black" IsEnabled="False">
+                                    <ComboBoxItem Content="MT5"/>
+                                </ComboBox>
+                                <TextBlock Text="MT5 symbol"/>
+                                <TextBox x:Name="SymbolBox" Text="XAUUSD" IsReadOnly="True"/>
+                                <TextBox x:Name="PriceUrlBox" Visibility="Collapsed"/>
+                                <PasswordBox x:Name="TwelveDataKeyBox" Visibility="Collapsed"/>
+                                <TextBox x:Name="IntervalBox" Visibility="Collapsed"/>
+                                <TextBlock Text="RSS feeds (one per line)"/>
+                                <TextBox x:Name="FeedsBox" AcceptsReturn="True" Height="90"/>
+                                <CheckBox x:Name="DefaultNewsBox" Content="Включи стандартните Google News търсения" IsChecked="True"/>
+                                <Button Content="Запази и приложи" Click="SaveSources_Click" Width="180" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
