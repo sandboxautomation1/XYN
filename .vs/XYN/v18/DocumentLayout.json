@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "E:\\Projects_MT5\\XYN\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -47,16 +55,8 @@
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:loginwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\xyn.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:xyn.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:models.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -66,47 +66,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Mt5BridgeClient.cs",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
-              "RelativeDocumentMoniker": "Mt5BridgeClient.cs",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
-              "RelativeToolTip": "Mt5BridgeClient.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCoAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T05:28:19.473Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-23T07:54:09.504Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Models.cs",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Models.cs",
-              "RelativeDocumentMoniker": "Models.cs",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\Models.cs",
-              "RelativeToolTip": "Models.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-26T10:06:40.152Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "MarketChart.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MarketChart.cs",
               "RelativeDocumentMoniker": "MarketChart.cs",
@@ -118,7 +82,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
+              "Title": "App.xaml",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-26T10:06:30.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Models.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Models.cs",
+              "RelativeDocumentMoniker": "Models.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Models.cs",
+              "RelativeToolTip": "Models.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAiwAwAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-26T10:06:40.152Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "Mt5MarketDataProvider.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5MarketDataProvider.cs",
               "RelativeDocumentMoniker": "Mt5MarketDataProvider.cs",
@@ -130,7 +119,18 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-23T07:54:09.504Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
@@ -138,12 +138,11 @@
               "RelativeToolTip": "MainWindow.xaml.cs",
               "ViewState": "AgIAACcBAAAAAAAAAAAIwNQAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T02:59:43.678Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-23T02:59:43.678Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "LocalSignalCalculator.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\LocalSignalCalculator.cs",
               "RelativeDocumentMoniker": "LocalSignalCalculator.cs",
@@ -155,7 +154,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 5,
+              "Title": "Mt5BridgeClient.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeDocumentMoniker": "Mt5BridgeClient.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeToolTip": "Mt5BridgeClient.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAQwCoAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T05:28:19.473Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
               "Title": "TechnicalIndicatorCalculator.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\TechnicalIndicatorCalculator.cs",
               "RelativeDocumentMoniker": "TechnicalIndicatorCalculator.cs",
@@ -167,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "Endpoints.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Endpoints.cs",
               "RelativeDocumentMoniker": "Endpoints.cs",
@@ -179,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "XYN",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\XYN.csproj",
               "RelativeDocumentMoniker": "XYN.csproj",
@@ -190,7 +201,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "Services.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Services.cs",
               "RelativeDocumentMoniker": "Services.cs",
@@ -202,7 +213,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "LoginWindow.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\LoginWindow.xaml",
               "RelativeDocumentMoniker": "LoginWindow.xaml",
@@ -213,27 +224,14 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "Styles.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Styles.xaml",
               "RelativeDocumentMoniker": "Styles.xaml",
               "ToolTip": "E:\\Projects_MT5\\XYN\\Styles.xaml",
               "RelativeToolTip": "Styles.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-28T08:32:00.121Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "App.xaml",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\App.xaml",
-              "RelativeDocumentMoniker": "App.xaml",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\App.xaml",
-              "RelativeToolTip": "App.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-26T10:06:30.23Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-28T08:32:00.121Z"
             }
           ]
         }
