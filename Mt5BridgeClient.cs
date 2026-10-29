@@ -20,7 +20,7 @@ public sealed class Mt5BridgeClient : IAsyncDisposable
     private readonly TimeSpan pollingInterval = TimeSpan.FromSeconds(5);
     private CancellationTokenSource? cancellation;
     private Task? pollingTask;
-    private string symbol = "XAUUSD";
+    private string symbol = "XAUUSD.p";
     private string timeframe = "M30";
     private int count = 100;
     private volatile bool isConnected;
@@ -41,7 +41,7 @@ public sealed class Mt5BridgeClient : IAsyncDisposable
     }
 
     public async Task StartAsync(
-        string symbol = "XAUUSD",
+        string symbol = "XAUUSD.p",
         string timeframe = "M30",
         int depth = 100,
         CancellationToken cancellationToken = default)

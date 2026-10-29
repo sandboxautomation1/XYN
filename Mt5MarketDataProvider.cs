@@ -25,7 +25,7 @@ public sealed class Mt5MarketDataProvider : IAsyncDisposable
     }
 
     public Task StartAsync(CancellationToken cancellationToken = default) =>
-        bridge.StartAsync("XAUUSD", "M30", 100, cancellationToken);
+        bridge.StartAsync("XAUUSD.p", "M30", 100, cancellationToken);
 
     public async Task<Mt5MarketData> WaitForInitialDataAsync(TimeSpan timeout, CancellationToken cancellationToken = default)
     {

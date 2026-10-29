@@ -18,6 +18,13 @@
                 <TextBlock x:Name="LastUpdatedText" Text="Свързване с market data…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                <StackPanel Margin="0,0,14,0">
+                    <TextBlock Text="MT5 SYMBOL" Foreground="{StaticResource MutedBrush}" FontSize="10" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox x:Name="SymbolInputBox" Width="112" Margin="0,4,6,4" Text="XAUUSD.p" ToolTip="Символът точно както е изписан в MT5"/>
+                        <Button x:Name="ApplySymbolButton" Content="Приложи" Click="ApplySymbol_Click" Margin="0,4,0,4"/>
+                    </StackPanel>
+                </StackPanel>
                 <StackPanel Margin="0,0,20,0" Height="19">
                     <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Right"/>
                 </StackPanel>
@@ -287,7 +294,7 @@
                                     <ComboBoxItem Content="MT5"/>
                                 </ComboBox>
                                 <TextBlock Text="MT5 symbol"/>
-                                <TextBox x:Name="SymbolBox" Text="XAUUSD" IsReadOnly="True"/>
+                                <TextBox x:Name="SymbolBox" Text="XAUUSD.p"/>
                                 <TextBox x:Name="PriceUrlBox" Visibility="Collapsed"/>
                                 <PasswordBox x:Name="TwelveDataKeyBox" Visibility="Collapsed"/>
                                 <TextBox x:Name="IntervalBox" Visibility="Collapsed"/>

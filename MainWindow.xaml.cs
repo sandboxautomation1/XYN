@@ -22,6 +22,7 @@ public partial class MainWindow : Window
     private bool isInitialized;
     private bool isChangingTimeframe;
     private string selectedTimeframe = "H1";
+    private string selectedSymbol = "XAUUSD.p";
 
     public MainWindow() : this(new GoldDeskService()) { }
 
@@ -46,7 +47,9 @@ public partial class MainWindow : Window
         try
         {
             ProviderBox.SelectedIndex = 0;
-            SymbolBox.Text = "XAUUSD";
+            selectedSymbol = string.IsNullOrWhiteSpace(service.Sources.Symbol) ? "XAUUSD.p" : service.Sources.Symbol.Trim();
+            SymbolInputBox.Text = selectedSymbol;
+            SymbolBox.Text = selectedSymbol;
             PriceUrlBox.Text = "MT5 bridge: http://127.0.0.1:8000";
             TwelveDataKeyBox.Password = string.Empty;
             IntervalBox.Text = selectedTimeframe;
@@ -55,7 +58,7 @@ public partial class MainWindow : Window
 
             try
             {
-                await mt5Bridge.StartAsync("XAUUSD", selectedTimeframe, 100);
+                await mt5Bridge.StartAsync(selectedSymbol, selectedTimeframe, 100);
                 var price = service.CurrentMt5Price ?? throw new InvalidOperationException("MT5 не върна live tick за XAUUSD.");
                 await service.GenerateAnalysisAsync(price);
                 UpdatePrice(price);
@@ -185,6 +188,49 @@ public partial class MainWindow : Window
 
     private async void Refresh_Click(object sender, RoutedEventArgs e) => await RefreshMarketAsync(true);
 
+    private async void ApplySymbol_Click(object sender, RoutedEventArgs e)
+    {
+        var symbol = SymbolInputBox.Text.Trim();
+        if (string.IsNullOrWhiteSpace(symbol))
+        {
+            MessageBox.Show("Въведете MT5 символ, например XAUUSD или XAUUSD.p.", "MT5 symbol", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return;
+        }
+
+        await ApplySymbolAsync(symbol);
+    }
+
+    private async Task ApplySymbolAsync(string symbol)
+    {
+        selectedSymbol = symbol.Trim();
+        SymbolInputBox.Text = selectedSymbol;
+        SymbolBox.Text = selectedSymbol;
+        service.Sources.Symbol = selectedSymbol;
+        service.SaveSources();
+        service.ClearPriceCache();
+        ApplySymbolButton.IsEnabled = false;
+        ApplySymbolButton.Content = "Зареждам…";
+        ChartMetaText.Text = $"MT5 REST · зареждане на {selectedSymbol}…";
+
+        try
+        {
+            await mt5Bridge.RestartAsync(selectedSymbol, selectedTimeframe, 100);
+            isInitialized = true;
+            PriceMeta.Text = $"MT5 · {selectedSymbol}";
+        }
+        catch (Exception ex)
+        {
+            isInitialized = false;
+            ChartMetaText.Text = $"Грешка при зареждане на {selectedSymbol}: {ex.Message}";
+            MessageBox.Show(ex.Message, "MT5 symbol", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        finally
+        {
+            ApplySymbolButton.IsEnabled = true;
+            ApplySymbolButton.Content = "Приложи";
+        }
+    }
+
     private async Task RefreshMarketAsync(bool includeNews)
     {
         if (isRefreshing) return;
@@ -266,7 +312,7 @@ public partial class MainWindow : Window
         ChartMetaText.Text = $"MT5 REST · зареждане на {selectedTimeframe} данни…";
         try
         {
-            await mt5Bridge.RestartAsync("XAUUSD", selectedTimeframe, 100);
+            await mt5Bridge.RestartAsync(selectedSymbol, selectedTimeframe, 100);
             PriceChart.Candles = [];
             PriceChart.InvalidateVisual();
         }
@@ -323,7 +369,12 @@ public partial class MainWindow : Window
         try
         {
             service.Sources.Provider = "mt5";
-            service.Sources.Symbol = "XAUUSD";
+            var requestedSymbol = SymbolBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(requestedSymbol))
+                throw new InvalidOperationException("Въведете MT5 символ.");
+            service.Sources.Symbol = requestedSymbol;
+            selectedSymbol = requestedSymbol;
+            SymbolInputBox.Text = selectedSymbol;
             service.Sources.PriceUrl = "MT5 bridge: http://localhost:8000";
             service.Sources.TwelveDataApiKey = string.Empty;
             service.Sources.TwelveDataInterval = selectedTimeframe;
