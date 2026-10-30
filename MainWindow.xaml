@@ -21,12 +21,12 @@
                 <StackPanel Margin="0,0,14,0">
                     <TextBlock Text="MT5 SYMBOL" Foreground="{StaticResource MutedBrush}" FontSize="10" HorizontalAlignment="Right"/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="SymbolInputBox" Width="112" Margin="0,4,6,4" Text="XAUUSD.p" ToolTip="Символът точно както е изписан в MT5"/>
+                        <TextBox x:Name="SymbolInputBox" Width="80" TextAlignment="Center" Margin="0,4,6,4" Text="XAUUSD.p" ToolTip="Символът точно както е изписан в MT5"/>
                         <Button x:Name="ApplySymbolButton" Content="Приложи" Click="ApplySymbol_Click" Margin="0,4,0,4"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Margin="0,0,20,0" Height="19">
-                    <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Right"/>
+                <StackPanel Margin="0,15,20,0" Height="19">
+                    <TextBlock x:Name="PriceMeta" Text="Зареждане…" Foreground="{StaticResource MutedBrush}" FontSize="11" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
                 <Button x:Name="RefreshButton" Content="Обнови Анализа" Click="Refresh_Click"/>
                 <Button x:Name="ChangeSourceButton" Content="Стартирай Bridge" Click="StartMt5Bridge_Click"/>
@@ -222,7 +222,7 @@
                         </StackPanel>
                     </TabItem>
                     <TabItem Header="Сигнал" Foreground="Black">
-                        <ScrollViewer Padding="4" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer Padding="4" VerticalScrollBarVisibility="Auto" Margin="-1,0,1,0">
                             <StackPanel Margin="8">
                                 <TextBlock Text="TRADERSVIEW · GOLD SIGNAL" Style="{StaticResource CardLabelStyle}"/>
                                 <TextBlock Text="Изберете timeframe и заявете актуален сигнал за златото." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
@@ -256,7 +256,7 @@
                                     <Border Grid.Column="1" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
                                         <StackPanel>
                                             <TextBlock Text="CONFIDENCE" Style="{StaticResource CardLabelStyle}"/>
-                                            <TextBlock x:Name="SignalConfidenceText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="18"/>
+                                            <TextBlock x:Name="SignalTotalConfidenceText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="18"/>
                                         </StackPanel>
                                     </Border>
                                     <Border Grid.Column="2" Style="{StaticResource DashboardCardStyle}" Margin="0,0,6,0">
@@ -278,10 +278,41 @@
                                         </StackPanel>
                                     </Border>
                                 </Grid>
-                                <TextBlock Text="Обобщение" Style="{StaticResource CardLabelStyle}"/>
-                                <TextBox x:Name="SignalSummaryText" Text="--" IsReadOnly="True" TextWrapping="Wrap" MinHeight="48"/>
-                                <TextBlock Text="Пълен response" Style="{StaticResource CardLabelStyle}" Margin="0,8,0,0"/>
-                                <TextBox x:Name="SignalResponseText" Text="Няма получен response." IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" MinHeight="180" FontFamily="Consolas"/>
+                                <TextBox x:Name="ConfidenceComponent_1" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,8,0,4"/>
+                                <TextBox x:Name="ConfidenceComponent_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="ConfidenceComponent_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBlock Text="bullish_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
+                                <TextBox x:Name="SignalBullishFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
+                                <TextBlock Text="bearish_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
+                                <TextBox x:Name="SignalBearishFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
+                                <TextBlock Text="risk_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
+                                <TextBox x:Name="SignalRiskFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
+
+                                <TextBlock Text="trade_levels" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,6"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                        <TextBlock Text="entry" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                        <TextBox x:Name="SignalTradeEntryText" Text="--" IsReadOnly="True"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="6,0,6,0">
+                                        <TextBlock Text="target" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                        <TextBox x:Name="SignalTradeTargetText" Text="--" IsReadOnly="True"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2" Margin="6,0,6,0">
+                                        <TextBlock Text="stop_loss" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                        <TextBox x:Name="SignalTradeStopLossText" Text="--" IsReadOnly="True"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="3" Margin="6,0,0,0">
+                                        <TextBlock Text="risk_reward_ratio" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                                        <TextBox x:Name="SignalRiskRewardRatioText" Text="--" IsReadOnly="True"/>
+                                    </StackPanel>
+                                </Grid>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>

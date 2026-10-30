@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using XYN.Signal;
 
 namespace GoldDesk.Desktop;
 
@@ -401,25 +402,22 @@ public partial class MainWindow : Window
         AnalyzeSignalButton.IsEnabled = false;
         AnalyzeSignalButton.Content = "Зареждам…";
         SignalRequestText.Text = $"GET https://tradersview.deriv.com{requestUrl}";
-        SignalResponseText.Text = "Изчакване на response…";
-        SignalSummaryText.Text = "--";
+        ResetSignalResponseFields("Изчакване…");
 
         try
         {
             using var response = await signalHttpClient.GetAsync(requestUrl);
             var content = await response.Content.ReadAsStringAsync();
-            SignalResponseText.Text = FormatSignalResponse(content);
             SignalRequestText.Text = $"{(int)response.StatusCode} {response.ReasonPhrase} · timeframe={timeframe}";
-            UpdateSignalFields(content);
+            UpdateSignalFields(content, new SignalResponse());
 
             if (!response.IsSuccessStatusCode)
-                SignalSummaryText.Text = $"Заявката върна HTTP {(int)response.StatusCode}.";
+                SignalRequestText.Text += $" · заявката върна HTTP {(int)response.StatusCode}";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             SignalRequestText.Text = $"Грешка · timeframe={timeframe}";
-            SignalResponseText.Text = ex.Message;
-            SignalSummaryText.Text = "Неуспешна заявка към TradersView.";
+            ResetSignalResponseFields("Неуспешна заявка към TradersView.");
         }
         finally
         {
@@ -428,72 +426,137 @@ public partial class MainWindow : Window
         }
     }
 
-    private void UpdateSignalFields(string content)
+    private void UpdateSignalFields(string content, SignalResponse response)
     {
         SignalActionText.Text = "--";
-        SignalConfidenceText.Text = "--";
+        SignalTotalConfidenceText.Text = "--";
         SignalEntryText.Text = "--";
         SignalStopLossText.Text = "--";
         SignalTakeProfitText.Text = "--";
-        SignalSummaryText.Text = "--";
+        ResetSignalResponseFields();
 
         try
         {
             using var document = JsonDocument.Parse(content);
             var root = document.RootElement;
             SignalActionText.Text = FindJsonValue(root, "signal", "action", "direction", "recommendation") ?? "--";
-            SignalConfidenceText.Text = FindJsonValue(root, "confidence", "confidencePercent", "probability") ?? "--";
+            SignalTotalConfidenceText.Text = $"{response.ConfidenceLabel} ({response.TotalConfidence}%)";
             SignalEntryText.Text = FindJsonValue(root, "entry", "entryPrice", "open") ?? "--";
             SignalStopLossText.Text = FindJsonValue(root, "stopLoss", "stop_loss", "sl") ?? "--";
             SignalTakeProfitText.Text = FindJsonValue(root, "takeProfit", "take_profit", "tp", "target") ?? "--";
-            SignalSummaryText.Text = FindJsonValue(root, "summary", "description", "reason", "analysis") ?? "Получен JSON response. Вижте пълния response по-долу.";
+            ConfidenceComponent_1.Text = FormatConfidenceComponent(root, 0);
+            ConfidenceComponent_2.Text = FormatConfidenceComponent(root, 1);
+            ConfidenceComponent_3.Text = FormatConfidenceComponent(root, 2);
+            SignalBullishFactorsText.Text = FormatSignalItems(root, "bullish_factors", "label", "explanation");
+            SignalBearishFactorsText.Text = FormatSignalItems(root, "bearish_factors", "label", "explanation");
+            SignalRiskFactorsText.Text = FormatSignalItems(root, "risk_factors", "label", "explanation");
+            SignalTradeEntryText.Text = FindTradeLevelValue(root, "entry");
+            SignalTradeTargetText.Text = FindTradeLevelValue(root, "target");
+            SignalTradeStopLossText.Text = FindTradeLevelValue(root, "stop_loss");
+            SignalRiskRewardRatioText.Text = FindTradeLevelValue(root, "risk_reward_ratio");
         }
         catch (JsonException)
         {
-            SignalSummaryText.Text = string.IsNullOrWhiteSpace(content) ? "Празен response." : content.Trim();
+            ResetSignalResponseFields(string.IsNullOrWhiteSpace(content) ? "Празен response." : content.Trim());
         }
     }
 
-    private static string FormatSignalResponse(string content)
+    private void ResetSignalResponseFields(string value = "--")
     {
-        if (string.IsNullOrWhiteSpace(content)) return "Празен response.";
-        try
+        SignalTotalConfidenceText.Text = value;
+        ConfidenceComponent_1.Text = value;
+        ConfidenceComponent_2.Text = value;
+        ConfidenceComponent_3.Text = value;
+        SignalBullishFactorsText.Text = value;
+        SignalBearishFactorsText.Text = value;
+        SignalRiskFactorsText.Text = value;
+        SignalTradeEntryText.Text = value;
+        SignalTradeTargetText.Text = value;
+        SignalTradeStopLossText.Text = value;
+        SignalRiskRewardRatioText.Text = value;
+    }
+
+    private static string FindTradeLevelValue(JsonElement root, string name)
+    {
+        if (TryFindJsonElement(root, out var tradeLevels, "trade_levels") &&
+            FindJsonValue(tradeLevels, name) is { } nestedValue)
+            return nestedValue;
+
+        return FindJsonValue(root, name) ?? "--";
+    }
+
+    private static string FormatSignalItems(JsonElement root, string propertyName, params string[] fields)
+    {
+        if (!TryFindJsonElement(root, out var value, propertyName) || value.ValueKind != JsonValueKind.Array)
+            return "--";
+
+        var items = value.EnumerateArray().Select(item =>
         {
-            using var document = JsonDocument.Parse(content);
-            return JsonSerializer.Serialize(document.RootElement, new JsonSerializerOptions { WriteIndented = true });
-        }
-        catch (JsonException)
-        {
-            return content;
-        }
+            if (item.ValueKind != JsonValueKind.Object)
+                return JsonElementToDisplayString(item);
+
+            var values = fields.Select(field =>
+            {
+                var display = FindJsonValue(item, field) ?? "--";
+                return $"{field}: {display}";
+            });
+            return string.Join(" · ", values);
+        }).ToArray();
+
+        return items.Length == 0 ? "--" : string.Join(Environment.NewLine, items);
+    }
+
+    private static string FormatConfidenceComponent(JsonElement root, int index)
+    {
+        if (!TryFindJsonElement(root, out var components, "confidence_components") ||
+            components.ValueKind != JsonValueKind.Array ||
+            components.GetArrayLength() <= index)
+            return "--";
+
+        var component = components[index];
+        if (component.ValueKind != JsonValueKind.Object)
+            return JsonElementToDisplayString(component);
+
+        var name = FindJsonValue(component, "name") ?? "--";
+        var score = FindJsonValue(component, "score") ?? "--";
+        var maxScore = FindJsonValue(component, "max_score") ?? "--";
+        var details = FindJsonValue(component, "details") ?? "--";
+        return string.Join(Environment.NewLine, name, $"{score} / {maxScore}", details);
     }
 
     private static string? FindJsonValue(JsonElement element, params string[] names)
+    {
+        return TryFindJsonElement(element, out var value, names) ? JsonElementToDisplayString(value) : null;
+    }
+
+    private static bool TryFindJsonElement(JsonElement element, out JsonElement result, params string[] names)
     {
         if (element.ValueKind == JsonValueKind.Object)
         {
             foreach (var property in element.EnumerateObject())
             {
                 if (names.Any(name => string.Equals(name, property.Name, StringComparison.OrdinalIgnoreCase)))
-                    return JsonElementToDisplayString(property.Value);
+                {
+                    result = property.Value;
+                    return true;
+                }
             }
 
             foreach (var property in element.EnumerateObject())
             {
-                var nested = FindJsonValue(property.Value, names);
-                if (nested is not null) return nested;
+                if (TryFindJsonElement(property.Value, out result, names)) return true;
             }
         }
         else if (element.ValueKind == JsonValueKind.Array)
         {
             foreach (var item in element.EnumerateArray())
             {
-                var nested = FindJsonValue(item, names);
-                if (nested is not null) return nested;
+                if (TryFindJsonElement(item, out result, names)) return true;
             }
         }
 
-        return null;
+        result = default;
+        return false;
     }
 
     private static string JsonElementToDisplayString(JsonElement element) => element.ValueKind switch
