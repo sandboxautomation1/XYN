@@ -86,8 +86,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAAPIBAAAAAAAAAAAswAECAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-23T02:59:43.678Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -103,19 +116,6 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAKcBAAAAAAAAAAAswMsBAAA5AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-23T02:59:43.678Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 3,
               "Title": "SignalService.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Signal\\SignalService.cs",
@@ -124,8 +124,7 @@
               "RelativeToolTip": "Signal\\SignalService.cs",
               "ViewState": "AgIAAA0AAAAAAAAAAAA1wCAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-30T02:33:15.773Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-30T02:33:15.773Z"
             },
             {
               "$type": "Document",
@@ -315,8 +314,8 @@
       "FloatingWindowState": {
         "Id": "6ef70c20-5ca7-4076-ba43-65adaffab8e9",
         "Display": 1,
-        "X": 434,
-        "Y": 88,
+        "X": 1006,
+        "Y": 396,
         "Width": 800,
         "Height": 600,
         "WindowState": 2
