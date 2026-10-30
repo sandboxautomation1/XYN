@@ -15,13 +15,13 @@
             <StackPanel DockPanel.Dock="Left">
                 <TextBlock Text="GOLD MARKET DASHBOARD" Foreground="{StaticResource MutedBrush}" FontSize="11" FontWeight="SemiBold"/>
                 <TextBlock Text="XAU/USD" Foreground="{StaticResource GoldBrush}" FontSize="30" FontFamily="Georgia"/>
-                <TextBlock x:Name="LastUpdatedText" Text="Свързване с market data…" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
+                <TextBlock x:Name="LastUpdatedText" Text="Последно обновяване · market data" Foreground="{StaticResource MutedBrush}" FontSize="11"/>
             </StackPanel>
             <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                 <StackPanel Margin="0,0,14,0">
                     <TextBlock Text="MT5 SYMBOL" Foreground="{StaticResource MutedBrush}" FontSize="10" HorizontalAlignment="Right"/>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="SymbolInputBox" Width="80" TextAlignment="Center" Margin="0,4,6,4" Text="XAUUSD.p" ToolTip="Символът точно както е изписан в MT5"/>
+                        <TextBox x:Name="SymbolInputBox" Width="80" TextAlignment="Center" Margin="0,4,6,4" Text="XAUUSD.p" ToolTip="Въведете MT5 символ, например XAUUSD.p"/>
                         <Button x:Name="ApplySymbolButton" Content="Приложи" Click="ApplySymbol_Click" Margin="0,4,0,4"/>
                     </StackPanel>
                 </StackPanel>
@@ -176,7 +176,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Style="{StaticResource DashboardCardStyle}" Padding="14">
-                <TabControl SelectionChanged="TabControl_SelectionChanged">
+                <TabControl SelectionChanged="TabControl_SelectionChanged" HorizontalAlignment="Center" Margin="0, 0, 0, 0" Width="1376">
                     <TabItem Header="Графика" Foreground="Black">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -201,7 +201,7 @@
                                     <TextBlock Text="зелено · ръст    червено · спад" Foreground="{StaticResource MutedBrush}" FontSize="10" VerticalAlignment="Center" Margin="12,0,0,0"/>
                                 </StackPanel>
                             </DockPanel>
-                            <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="2">
+                            <Border Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="2" Margin="10,0,0,0">
                                 <local:MarketChart x:Name="PriceChart"/>
                             </Border>
                         </Grid>
@@ -222,7 +222,7 @@
                         </StackPanel>
                     </TabItem>
                     <TabItem Header="Сигнал" Foreground="Black">
-                        <ScrollViewer Padding="4" VerticalScrollBarVisibility="Auto" Margin="-1,0,1,0">
+                        <ScrollViewer Padding="4" Margin="10,0,15,0" CanContentScroll="True">
                             <StackPanel Margin="8">
                                 <TextBlock Text="TRADERSVIEW · GOLD SIGNAL" Style="{StaticResource CardLabelStyle}"/>
                                 <TextBlock Text="Изберете timeframe и заявете актуален сигнал за златото." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
@@ -281,14 +281,16 @@
                                 <TextBox x:Name="ConfidenceComponent_1" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,8,0,4"/>
                                 <TextBox x:Name="ConfidenceComponent_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
                                 <TextBox x:Name="ConfidenceComponent_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
-                                <TextBlock Text="bullish_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
-                                <TextBox x:Name="SignalBullishFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
-                                <TextBlock Text="bearish_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
+                                <TextBlock Text="Бичи (Bullish) Фактори" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,4"/>
+                                <TextBox x:Name="BullishFactor_1" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="BullishFactor_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="BullishFactor_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72"/>
+                                <TextBlock Text="Мечи (Bearish) Фактори" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,4"/>
                                 <TextBox x:Name="SignalBearishFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
                                 <TextBlock Text="risk_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
                                 <TextBox x:Name="SignalRiskFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
 
-                                <TextBlock Text="trade_levels" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,6"/>
+                                <TextBlock Text="Trade Levels" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,6"/>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -331,7 +333,7 @@
                                 <TextBox x:Name="IntervalBox" Visibility="Collapsed"/>
                                 <TextBlock Text="RSS feeds (one per line)"/>
                                 <TextBox x:Name="FeedsBox" AcceptsReturn="True" Height="90"/>
-                                <CheckBox x:Name="DefaultNewsBox" Content="Включи стандартните Google News търсения" IsChecked="True"/>
+                                <CheckBox x:Name="DefaultNewsBox" Content="Зареждай автоматично Google News новини" IsChecked="True"/>
                                 <Button Content="Запази и приложи" Click="SaveSources_Click" Width="180" HorizontalAlignment="Left"/>
                             </StackPanel>
                         </ScrollViewer>

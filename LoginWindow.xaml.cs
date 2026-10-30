@@ -47,7 +47,7 @@ public partial class LoginWindow : Window
         }
         catch (Exception ex)
         {
-            AuthStatus.Text = "Възникна грешка: " + ex.Message;
+            AuthStatus.Text = "Неочаквана грешка: " + ex.Message;
         }
         finally
         {
@@ -59,12 +59,12 @@ public partial class LoginWindow : Window
     private void ToggleAuth_Click(object sender, RoutedEventArgs e)
     {
         signup = !signup;
-        AuthTitle.Text = signup ? "Нов профил" : "Вход";
+        AuthTitle.Text = signup ? "Нова регистрация" : "Вход";
         AuthSubtitle.Text = signup
-            ? "Създайте профил – данните ви са видими само за вас."
-            : "Влезте, за да видите вашите сигнали и новини.";
-        AuthButton.Content = signup ? "Създай профил" : "Влез";
-        ToggleAuthButton.Content = signup ? "Вече имате профил? Вход" : "Нямате профил? Регистрация";
+            ? "Създайте акаунт и потвърдете имейла си."
+            : "Влезте, за да използвате пазарния анализ.";
+        AuthButton.Content = signup ? "Създай акаунт" : "Вход";
+        ToggleAuthButton.Content = signup ? "Вече имате акаунт? Вход" : "Нямате акаунт? Регистрация";
         AuthStatus.Text = "";
     }
 }

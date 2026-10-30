@@ -1,19 +1,20 @@
 using System.Diagnostics;
 using System.IO;
-using System.Net.Http;
-using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using XYN.Signal;
+using System.Net.Http;
 
 namespace GoldDesk.Desktop;
 
 public partial class MainWindow : Window
 {
-    private static readonly HttpClient signalHttpClient = new() { BaseAddress = new Uri("https://tradersview.deriv.com") };
-    private static readonly HttpClient bridgeHealthClient = new() { BaseAddress = new Uri("http://127.0.0.1:8000"), Timeout = TimeSpan.FromSeconds(2) };
+    private static readonly RestClient signalClient = new(new RestClientOptions("https://tradersview.deriv.com") { Timeout = TimeSpan.FromSeconds(20) });
+    private static readonly RestClient bridgeHealthClient = new(new RestClientOptions("http://127.0.0.1:8000") { Timeout = TimeSpan.FromSeconds(2) });
     private readonly GoldDeskService service;
     private readonly Mt5BridgeClient mt5Bridge = new();
     private Process? mt5ServerProcess;
@@ -64,7 +65,7 @@ public partial class MainWindow : Window
                 await service.GenerateAnalysisAsync(price);
                 UpdatePrice(price);
                 Render();
-                ChartMetaText.Text = $"MT5 · {selectedTimeframe} · live tick";
+                ChartMetaText.Text = $"MT5  ·  {selectedTimeframe}  ·  live tick";
                 isInitialized = true;
             }
             catch (Exception ex)
@@ -112,7 +113,7 @@ public partial class MainWindow : Window
             });
 
             PriceMeta.Text = "Стартирам MT5 bridge на 127.0.0.1:8000…";
-            ChartMetaText.Text = "MT5 bridge server · uv run · 127.0.0.1:8000";
+            ChartMetaText.Text = "MT5 bridge server  ·  uv run  ·  127.0.0.1:8000";
 
             if (!await WaitForBridgeAsync())
             {
@@ -142,8 +143,8 @@ public partial class MainWindow : Window
         {
             try
             {
-                using var response = await bridgeHealthClient.GetAsync("/health");
-                if (response.IsSuccessStatusCode) return true;
+                var response = await bridgeHealthClient.ExecuteAsync(new RestRequest("/health", Method.Get));
+                if (response.IsSuccessful) return true;
             }
             catch (HttpRequestException) { }
             catch (TaskCanceledException) { }
@@ -211,13 +212,13 @@ public partial class MainWindow : Window
         service.ClearPriceCache();
         ApplySymbolButton.IsEnabled = false;
         ApplySymbolButton.Content = "Зареждам…";
-        ChartMetaText.Text = $"MT5 REST · зареждане на {selectedSymbol}…";
+        ChartMetaText.Text = $"MT5 REST   ·   зареждане на {selectedSymbol}…";
 
         try
         {
             await mt5Bridge.RestartAsync(selectedSymbol, selectedTimeframe, 100);
             isInitialized = true;
-            PriceMeta.Text = $"MT5 · {selectedSymbol}";
+            PriceMeta.Text = $"MT5  ·  {selectedSymbol}";
         }
         catch (Exception ex)
         {
@@ -258,13 +259,13 @@ public partial class MainWindow : Window
     private void UpdatePrice(GoldPrice price)
     {
  
-        PriceMeta.Text = $"{price.Symbol} · {price.Source} · {price.ChangePct:+0.00;-0.00;0.00}%";
+        PriceMeta.Text = $"{price.Symbol}  ·  {price.Source}  ·  {price.ChangePct:+0.00;-0.00;0.00}%";
         var snapshot = service.MarketSnapshot;
         OpenText.Text = snapshot?.Open.ToString("0.00") ?? "--";
         HighText.Text = snapshot?.High.ToString("0.00") ?? "--";
         LowText.Text = snapshot?.Low.ToString("0.00") ?? "--";
         CloseText.Text = snapshot?.Close.ToString("0.00") ?? price.Price.ToString("0.00");
-        LastUpdatedText.Text = $"{price.Source} · последно обновяване {price.UpdatedAt:HH:mm:ss}";
+        LastUpdatedText.Text = $"{price.Source}   ·   последно обновяване {price.UpdatedAt:HH:mm:ss}";
         var daily = service.Forecasts.FirstOrDefault(x => x.Horizon.Contains("24"));
         var weekly = service.Forecasts.FirstOrDefault(x => x.Horizon.Contains("седмица"));
         DailyRangeText.Text = daily is null ? "--" : $"{daily.Low:0.00} – {daily.High:0.00}";
@@ -283,7 +284,7 @@ public partial class MainWindow : Window
         PriceChart.CurrentPrice = price.Price;
         PriceChart.BuyAbove = service.CurrentSignal?.Levels.BuyAbove;
         PriceChart.SellBelow = service.CurrentSignal?.Levels.SellBelow;
-        ChartMetaText.Text = $"{price.Source} · {service.MarketHistory.Count} свещи · обновено {price.UpdatedAt:HH:mm:ss}";
+        ChartMetaText.Text = $"{price.Source}   ·   {service.MarketHistory.Count} свещи   ·   обновено {price.UpdatedAt:HH:mm:ss}";
         UpdateTechnicalIndicators();
         PriceChart.InvalidateVisual();
     }
@@ -294,7 +295,7 @@ public partial class MainWindow : Window
             service.ApplyMt5History(candles); 
             PriceChart.Candles = service.MarketHistory;
             UpdateTechnicalIndicators(); 
-                ChartMetaText.Text = $"MT5 REST · {symbol} · {selectedTimeframe} · {candles.Count} свещи"; PriceChart.InvalidateVisual(); 
+                ChartMetaText.Text = $"MT5 REST   ·   {symbol}   ·   {selectedTimeframe}   ·   {candles.Count} свещи"; PriceChart.InvalidateVisual(); 
         });
     }
 
@@ -310,7 +311,7 @@ public partial class MainWindow : Window
         isChangingTimeframe = true;
         TimeframeBox.IsEnabled = false;
         selectedTimeframe = timeframe;
-        ChartMetaText.Text = $"MT5 REST · зареждане на {selectedTimeframe} данни…";
+        ChartMetaText.Text = $"MT5 REST   ·   зареждане на {selectedTimeframe} данни…";
         try
         {
             await mt5Bridge.RestartAsync(selectedSymbol, selectedTimeframe, 100);
@@ -406,17 +407,17 @@ public partial class MainWindow : Window
 
         try
         {
-            using var response = await signalHttpClient.GetAsync(requestUrl);
-            var content = await response.Content.ReadAsStringAsync();
-            SignalRequestText.Text = $"{(int)response.StatusCode} {response.ReasonPhrase} · timeframe={timeframe}";
+            var response = await signalClient.ExecuteAsync(new RestRequest(requestUrl, Method.Get));
+            var content = response.Content ?? string.Empty;
+            SignalRequestText.Text = $"{(int?)response.StatusCode ?? 0} {response.StatusDescription}  ·  timeframe={timeframe}";
             UpdateSignalFields(content, new SignalResponse());
 
-            if (!response.IsSuccessStatusCode)
-                SignalRequestText.Text += $" · заявката върна HTTP {(int)response.StatusCode}";
+            if (!response.IsSuccessful)
+                SignalRequestText.Text += $"   ·   заявката върна HTTP {(int?)response.StatusCode ?? 0}";
         }
         catch (Exception)
         {
-            SignalRequestText.Text = $"Грешка · timeframe={timeframe}";
+            SignalRequestText.Text = $"Грешка   ·   timeframe={timeframe}";
             ResetSignalResponseFields("Неуспешна заявка към TradersView.");
         }
         finally
@@ -437,8 +438,8 @@ public partial class MainWindow : Window
 
         try
         {
-            using var document = JsonDocument.Parse(content);
-            var root = document.RootElement;
+            
+            var root = JObject.Parse(content);
             SignalActionText.Text = FindJsonValue(root, "signal", "action", "direction", "recommendation") ?? "--";
             SignalTotalConfidenceText.Text = $"{response.ConfidenceLabel} ({response.TotalConfidence}%)";
             SignalEntryText.Text = FindJsonValue(root, "entry", "entryPrice", "open") ?? "--";
@@ -447,7 +448,9 @@ public partial class MainWindow : Window
             ConfidenceComponent_1.Text = FormatConfidenceComponent(root, 0);
             ConfidenceComponent_2.Text = FormatConfidenceComponent(root, 1);
             ConfidenceComponent_3.Text = FormatConfidenceComponent(root, 2);
-            SignalBullishFactorsText.Text = FormatSignalItems(root, "bullish_factors", "label", "explanation");
+            BullishFactor_1.Text = FormatBullishFactor(root, 0);
+            BullishFactor_2.Text = FormatBullishFactor(root, 1);
+            BullishFactor_3.Text = FormatBullishFactor(root, 2);
             SignalBearishFactorsText.Text = FormatSignalItems(root, "bearish_factors", "label", "explanation");
             SignalRiskFactorsText.Text = FormatSignalItems(root, "risk_factors", "label", "explanation");
             SignalTradeEntryText.Text = FindTradeLevelValue(root, "entry");
@@ -455,7 +458,7 @@ public partial class MainWindow : Window
             SignalTradeStopLossText.Text = FindTradeLevelValue(root, "stop_loss");
             SignalRiskRewardRatioText.Text = FindTradeLevelValue(root, "risk_reward_ratio");
         }
-        catch (JsonException)
+        catch (Newtonsoft.Json.JsonException)
         {
             ResetSignalResponseFields(string.IsNullOrWhiteSpace(content) ? "Празен response." : content.Trim());
         }
@@ -467,7 +470,9 @@ public partial class MainWindow : Window
         ConfidenceComponent_1.Text = value;
         ConfidenceComponent_2.Text = value;
         ConfidenceComponent_3.Text = value;
-        SignalBullishFactorsText.Text = value;
+        BullishFactor_1.Text = value;
+        BullishFactor_2.Text = value;
+        BullishFactor_3.Text = value;
         SignalBearishFactorsText.Text = value;
         SignalRiskFactorsText.Text = value;
         SignalTradeEntryText.Text = value;
@@ -476,64 +481,60 @@ public partial class MainWindow : Window
         SignalRiskRewardRatioText.Text = value;
     }
 
-    private static string FindTradeLevelValue(JsonElement root, string name)
+    private static string FindTradeLevelValue(JObject root, string name)
     {
-        if (TryFindJsonElement(root, out var tradeLevels, "trade_levels") &&
-            FindJsonValue(tradeLevels, name) is { } nestedValue)
+        if (TryFindJsonToken(root, out var tradeLevels, "trade_levels") && FindJsonValue(tradeLevels, name) is { } nestedValue)
             return nestedValue;
-
         return FindJsonValue(root, name) ?? "--";
     }
 
-    private static string FormatSignalItems(JsonElement root, string propertyName, params string[] fields)
+    private static string FormatSignalItems(JObject root, string propertyName, params string[] fields)
     {
-        if (!TryFindJsonElement(root, out var value, propertyName) || value.ValueKind != JsonValueKind.Array)
+        if (!TryFindJsonToken(root, out var value, propertyName) || value is not JArray array)
             return "--";
-
-        var items = value.EnumerateArray().Select(item =>
+        var items = array.Select(item =>
         {
-            if (item.ValueKind != JsonValueKind.Object)
-                return JsonElementToDisplayString(item);
-
-            var values = fields.Select(field =>
-            {
-                var display = FindJsonValue(item, field) ?? "--";
-                return $"{field}: {display}";
-            });
-            return string.Join(" · ", values);
+            if (item is not JObject obj) return JTokenToDisplayString(item);
+            return string.Join(" Р’ ·  ", fields.Select(field => $"{field}: {FindJsonValue(obj, field) ?? "--"}"));
         }).ToArray();
-
         return items.Length == 0 ? "--" : string.Join(Environment.NewLine, items);
     }
 
-    private static string FormatConfidenceComponent(JsonElement root, int index)
+    private static string FormatBullishFactor(JObject root, int index)
     {
-        if (!TryFindJsonElement(root, out var components, "confidence_components") ||
-            components.ValueKind != JsonValueKind.Array ||
-            components.GetArrayLength() <= index)
+        if (!TryFindJsonToken(root, out var value, "bullish_factors") || value is not JArray array || array.Count <= index)
             return "--";
 
-        var component = components[index];
-        if (component.ValueKind != JsonValueKind.Object)
-            return JsonElementToDisplayString(component);
+        if (array[index] is not JObject factor)
+            return JTokenToDisplayString(array[index]);
 
-        var name = FindJsonValue(component, "name") ?? "--";
-        var score = FindJsonValue(component, "score") ?? "--";
-        var maxScore = FindJsonValue(component, "max_score") ?? "--";
-        var details = FindJsonValue(component, "details") ?? "--";
+        var label = FindJsonValue(factor, "label") ?? "--";
+        var explanation = FindJsonValue(factor, "explanation") ?? "--";
+        var strength = FindJsonValue(factor, "strength") ?? "--";
+        return string.Join(Environment.NewLine, label, explanation, strength);
+    }
+
+    private static string FormatConfidenceComponent(JObject root, int index)
+    {
+        if (!TryFindJsonToken(root, out var components, "confidence_components") || components is not JArray array || array.Count <= index)
+            return "--";
+        var component = array[index];
+        if (component is not JObject obj) return JTokenToDisplayString(component);
+        var name = FindJsonValue(obj, "name") ?? "--";
+        var score = FindJsonValue(obj, "score") ?? "--";
+        var maxScore = FindJsonValue(obj, "max_score") ?? "--";
+        var details = FindJsonValue(obj, "details") ?? "--";
         return string.Join(Environment.NewLine, name, $"{score} / {maxScore}", details);
     }
 
-    private static string? FindJsonValue(JsonElement element, params string[] names)
-    {
-        return TryFindJsonElement(element, out var value, names) ? JsonElementToDisplayString(value) : null;
-    }
+    private static string? FindJsonValue(JToken element, params string[] names) =>
+        TryFindJsonToken(element, out var value, names) ? JTokenToDisplayString(value) : null;
 
-    private static bool TryFindJsonElement(JsonElement element, out JsonElement result, params string[] names)
+    private static bool TryFindJsonToken(JToken element, out JToken result, params string[] names)
     {
-        if (element.ValueKind == JsonValueKind.Object)
+        if (element is JObject obj)
         {
-            foreach (var property in element.EnumerateObject())
+            foreach (var property in obj.Properties())
             {
                 if (names.Any(name => string.Equals(name, property.Name, StringComparison.OrdinalIgnoreCase)))
                 {
@@ -541,34 +542,25 @@ public partial class MainWindow : Window
                     return true;
                 }
             }
-
-            foreach (var property in element.EnumerateObject())
-            {
-                if (TryFindJsonElement(property.Value, out result, names)) return true;
-            }
+            foreach (var property in obj.Properties())
+                if (TryFindJsonToken(property.Value, out result, names)) return true;
         }
-        else if (element.ValueKind == JsonValueKind.Array)
+        else if (element is JArray array)
         {
-            foreach (var item in element.EnumerateArray())
-            {
-                if (TryFindJsonElement(item, out result, names)) return true;
-            }
+            foreach (var item in array)
+                if (TryFindJsonToken(item, out result, names)) return true;
         }
-
-        result = default;
+        result = JValue.CreateNull();
         return false;
     }
 
-    private static string JsonElementToDisplayString(JsonElement element) => element.ValueKind switch
+    private static string JTokenToDisplayString(JToken token) => token.Type switch
     {
-        JsonValueKind.String => element.GetString() ?? "--",
-        JsonValueKind.Number => element.ToString(),
-        JsonValueKind.True => "true",
-        JsonValueKind.False => "false",
-        JsonValueKind.Null => "--",
-        _ => element.GetRawText()
+        JTokenType.String => token.Value<string>() ?? "--",
+        JTokenType.Integer or JTokenType.Float or JTokenType.Boolean => token.ToString(),
+        JTokenType.Null or JTokenType.Undefined => "--",
+        _ => token.ToString(Newtonsoft.Json.Formatting.None)
     };
-
     private void Render()
     {
         var signal = service.CurrentSignal;
@@ -576,7 +568,7 @@ public partial class MainWindow : Window
         {
             CurrentSignalText.Text = GoldDeskService.ActionLabel(signal.Action);
             CurrentSignalText.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(signal.Action == "buy" ? "#73D49A" : signal.Action == "sell" ? "#F17C65" : "#AEB8D9"));
-            SignalMeta.Text = $"увереност {signal.Confidence}% · риск {(signal.Risk == "medium" ? "среден" : "висок")} · {signal.Horizon}";
+            SignalMeta.Text = $"увереност {signal.Confidence}%   ·   риск {(signal.Risk == "medium" ? "среден" : "висок")}   ·   {signal.Horizon}";
             ConfidenceText.Text = $"{signal.Confidence}%";
             PriceChart.BuyAbove = signal.Levels.BuyAbove; PriceChart.SellBelow = signal.Levels.SellBelow; PriceChart.InvalidateVisual();
         }
@@ -584,7 +576,7 @@ public partial class MainWindow : Window
         NewsList.Items.Clear();
         foreach (var news in service.News)
         {
-            var textBlock = new TextBlock { Text = $"{(news.Sentiment == "bullish" ? "БИЧИ" : news.Sentiment == "bearish" ? "МЕЧИ" : "НЕУТРАЛНО")} · въздействие {news.Impact}/5 · {news.Source}\n{news.Title}\n{news.Summary}", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 14) };
+            var textBlock = new TextBlock { Text = $"{(news.Sentiment == "bullish" ? "БИЧИ" : news.Sentiment == "bearish" ? "МЕЧИ" : "НЕУТРАЛНО")}   ·   въздействие {news.Impact}/5   ·   {news.Source}\n{news.Title}\n{news.Summary}", TextWrapping = TextWrapping.Wrap, Margin = new Thickness(0, 0, 0, 14) };
             textBlock.MouseLeftButtonUp += (_, _) => { if (Uri.TryCreate(news.Url, UriKind.Absolute, out var uri) && uri.Scheme != "manual") Process.Start(new ProcessStartInfo(uri.ToString()) { UseShellExecute = true }); };
             NewsList.Items.Add(textBlock);
         }
@@ -592,3 +584,5 @@ public partial class MainWindow : Window
 
     private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
 }
+
+
