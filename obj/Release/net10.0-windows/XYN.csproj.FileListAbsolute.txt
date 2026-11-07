@@ -25,3 +25,6 @@ E:\Projects_MT5\XYN\obj\Release\net10.0-windows\ref\XYN.dll
 E:\Projects_MT5\XYN\bin\Release\net10.0-windows\XYN.exe
 E:\Projects_MT5\XYN\obj\Release\net10.0-windows\XYN.sourcelink.json
 E:\Projects_MT5\XYN\obj\Release\net10.0-windows\XYN.csproj.Up2Date
+E:\Projects_MT5\XYN\bin\Release\net10.0-windows\Newtonsoft.Json.dll
+E:\Projects_MT5\XYN\bin\Release\net10.0-windows\RestSharp.dll
+E:\Projects_MT5\XYN\obj\Release\net10.0-windows\XYN.csproj.AssemblyReference.cache

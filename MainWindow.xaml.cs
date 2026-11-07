@@ -14,6 +14,7 @@ namespace GoldDesk.Desktop;
 public partial class MainWindow : Window
 {
     private static readonly RestClient signalClient = new(new RestClientOptions("https://tradersview.deriv.com") { Timeout = TimeSpan.FromSeconds(20) });
+    private static readonly RestClient tradersUnionClient = new(new RestClientOptions("https://quotes.tradersunion.com") { Timeout = TimeSpan.FromSeconds(20) });
     private static readonly RestClient bridgeHealthClient = new(new RestClientOptions("http://127.0.0.1:8000") { Timeout = TimeSpan.FromSeconds(2) });
     private readonly GoldDeskService service;
     private readonly Mt5BridgeClient mt5Bridge = new();
@@ -23,6 +24,8 @@ public partial class MainWindow : Window
     private bool isRefreshing;
     private bool isInitialized;
     private bool isChangingTimeframe;
+    private bool tradersUnionLoaded;
+    private bool tradersUnionTechnicalLoaded;
     private string selectedTimeframe = "H1";
     private string selectedSymbol = "XAUUSD.p";
 
@@ -451,8 +454,12 @@ public partial class MainWindow : Window
             BullishFactor_1.Text = FormatBullishFactor(root, 0);
             BullishFactor_2.Text = FormatBullishFactor(root, 1);
             BullishFactor_3.Text = FormatBullishFactor(root, 2);
-            SignalBearishFactorsText.Text = FormatSignalItems(root, "bearish_factors", "label", "explanation");
-            SignalRiskFactorsText.Text = FormatSignalItems(root, "risk_factors", "label", "explanation");
+            BearishFactor_1.Text = FormatBearishFactor(root, 0);
+            BearishFactor_2.Text = FormatBearishFactor(root, 1);
+            BearishFactor_3.Text = FormatBearishFactor(root, 2);
+            RiskFactor_1.Text = FormatRiskFactor(root, 0);
+            RiskFactor_2.Text = FormatRiskFactor(root, 1);
+            RiskFactor_3.Text = FormatRiskFactor(root, 2);
             SignalTradeEntryText.Text = FindTradeLevelValue(root, "entry");
             SignalTradeTargetText.Text = FindTradeLevelValue(root, "target");
             SignalTradeStopLossText.Text = FindTradeLevelValue(root, "stop_loss");
@@ -473,8 +480,12 @@ public partial class MainWindow : Window
         BullishFactor_1.Text = value;
         BullishFactor_2.Text = value;
         BullishFactor_3.Text = value;
-        SignalBearishFactorsText.Text = value;
-        SignalRiskFactorsText.Text = value;
+        BearishFactor_1.Text = value;
+        BearishFactor_2.Text = value;
+        BearishFactor_3.Text = value;
+        RiskFactor_1.Text = value;
+        RiskFactor_2.Text = value;
+        RiskFactor_3.Text = value;
         SignalTradeEntryText.Text = value;
         SignalTradeTargetText.Text = value;
         SignalTradeStopLossText.Text = value;
@@ -503,6 +514,34 @@ public partial class MainWindow : Window
     private static string FormatBullishFactor(JObject root, int index)
     {
         if (!TryFindJsonToken(root, out var value, "bullish_factors") || value is not JArray array || array.Count <= index)
+            return "--";
+
+        if (array[index] is not JObject factor)
+            return JTokenToDisplayString(array[index]);
+
+        var label = FindJsonValue(factor, "label") ?? "--";
+        var explanation = FindJsonValue(factor, "explanation") ?? "--";
+        var strength = FindJsonValue(factor, "strength") ?? "--";
+        return string.Join(Environment.NewLine, label, explanation, strength);
+    }
+
+    private static string FormatBearishFactor(JObject root, int index)
+    {
+        if (!TryFindJsonToken(root, out var value, "bearish_factors") || value is not JArray array || array.Count <= index)
+            return "--";
+
+        if (array[index] is not JObject factor)
+            return JTokenToDisplayString(array[index]);
+
+        var label = FindJsonValue(factor, "label") ?? "--";
+        var explanation = FindJsonValue(factor, "explanation") ?? "--";
+        var strength = FindJsonValue(factor, "strength") ?? "--";
+        return string.Join(Environment.NewLine, label, explanation, strength);
+    }
+
+    private static string FormatRiskFactor(JObject root, int index)
+    {
+        if (!TryFindJsonToken(root, out var value, "risk_factors") || value is not JArray array || array.Count <= index)
             return "--";
 
         if (array[index] is not JObject factor)
@@ -582,7 +621,209 @@ public partial class MainWindow : Window
         }
     }
 
-    private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+    private async void LoadTradersUnion_Click(object sender, RoutedEventArgs e) => await LoadTradersUnionAsync();
+
+    private async Task LoadTradersUnionAsync()
+    {
+        var symbol = TradersUnionSymbolBox.Text.Trim();
+        if (string.IsNullOrWhiteSpace(symbol))
+        {
+            TradersUnionRequestText.Text = "Въведете symbol ID, например 775.";
+            return;
+        }
+
+        var requestUrl = $"/api/v3/quote/?symbol={Uri.EscapeDataString(symbol)}&locale=en";
+        LoadTradersUnionButton.IsEnabled = false;
+        LoadTradersUnionButton.Content = "Зареждам…";
+        TradersUnionRequestText.Text = $"GET https://quotes.tradersunion.com{requestUrl}";
+        TradersUnionIndicatorsPanel.Children.Clear();
+
+        try
+        {
+            var response = await tradersUnionClient.ExecuteAsync(new RestRequest(requestUrl, Method.Get));
+            var content = response.Content ?? string.Empty;
+            TradersUnionRequestText.Text = $"GET https://quotes.tradersunion.com{requestUrl}   ·   {(int?)response.StatusCode ?? 0} {response.StatusDescription}";
+
+            if (!response.IsSuccessful)
+            {
+                AddTradersUnionField("HTTP response", content.Length == 0 ? "Няма съдържание" : content);
+                return;
+            }
+
+            var root = JToken.Parse(content);
+            var fields = FlattenTradersUnionValues(root, string.Empty).ToList();
+            if (fields.Count == 0)
+            {
+                AddTradersUnionField("response", "Празен JSON response.");
+                return;
+            }
+
+            foreach (var field in fields)
+                AddTradersUnionField(field.Path, field.Value);
+
+            tradersUnionLoaded = true;
+            TradersUnionRequestText.Text += $"   ·   {fields.Count} полета";
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            AddTradersUnionField("response", "Отговорът не е валиден JSON.");
+        }
+        catch (Exception ex)
+        {
+            AddTradersUnionField("Грешка", ex.Message);
+        }
+        finally
+        {
+            LoadTradersUnionButton.IsEnabled = true;
+            LoadTradersUnionButton.Content = "Зареди индикаторите";
+        }
+    }
+
+    private async void LoadTradersUnionTechnical_Click(object sender, RoutedEventArgs e) => await LoadTradersUnionTechnicalAsync();
+
+    private async Task LoadTradersUnionTechnicalAsync()
+    {
+        var symbol = TradersUnionTechnicalSymbolBox.Text.Trim();
+        if (string.IsNullOrWhiteSpace(symbol))
+        {
+            TradersUnionTechnicalRequestText.Text = "Въведете symbol ID, например 775.";
+            return;
+        }
+
+        var requestUrl = $"/api/v3/informer/technical-analysis/detailed/?symbol={Uri.EscapeDataString(symbol)}";
+        LoadTradersUnionTechnicalButton.IsEnabled = false;
+        LoadTradersUnionTechnicalButton.Content = "Зареждам…";
+        TradersUnionTechnicalRequestText.Text = $"GET https://quotes.tradersunion.com{requestUrl}";
+        TradersUnionTechnicalIndicatorsPanel.Children.Clear();
+
+        try
+        {
+            var response = await tradersUnionClient.ExecuteAsync(new RestRequest(requestUrl, Method.Get));
+            var content = response.Content ?? string.Empty;
+            TradersUnionTechnicalRequestText.Text = $"GET https://quotes.tradersunion.com{requestUrl}   ·   {(int?)response.StatusCode ?? 0} {response.StatusDescription}";
+
+            if (!response.IsSuccessful)
+            {
+                AddTechnicalAnalysisField("HTTP response", content.Length == 0 ? "Няма съдържание" : content);
+                return;
+            }
+
+            var root = JToken.Parse(content);
+            var fields = FlattenTradersUnionValues(root, string.Empty).ToList();
+            if (fields.Count == 0)
+            {
+                AddTechnicalAnalysisField("response", "Празен JSON response.");
+                return;
+            }
+
+            foreach (var field in fields)
+                AddTechnicalAnalysisField(field.Path, field.Value);
+
+            tradersUnionTechnicalLoaded = true;
+            TradersUnionTechnicalRequestText.Text += $"   ·   {fields.Count} полета";
+        }
+        catch (Newtonsoft.Json.JsonException)
+        {
+            AddTechnicalAnalysisField("response", "Отговорът не е валиден JSON.");
+        }
+        catch (Exception ex)
+        {
+            AddTechnicalAnalysisField("Грешка", ex.Message);
+        }
+        finally
+        {
+            LoadTradersUnionTechnicalButton.IsEnabled = true;
+            LoadTradersUnionTechnicalButton.Content = "Зареди анализа";
+        }
+    }
+
+    private void AddTradersUnionField(string name, string value)
+    {
+        AddIndicatorField(TradersUnionIndicatorsPanel, name, value);
+    }
+
+    private void AddTechnicalAnalysisField(string name, string value)
+    {
+        AddIndicatorField(TradersUnionTechnicalIndicatorsPanel, name, value);
+    }
+
+    private void AddIndicatorField(Panel panel, string name, string value)
+    {
+        var card = new Border
+        {
+            Width = 260,
+            MinHeight = 82,
+            Margin = new Thickness(0, 0, 10, 10),
+            Style = (Style)FindResource("DashboardCardStyle")
+        };
+        var content = new StackPanel();
+        content.Children.Add(new TextBlock
+        {
+            Text = name,
+            Foreground = (Brush)FindResource("MutedBrush"),
+            FontSize = 10,
+            FontWeight = FontWeights.SemiBold,
+            TextWrapping = TextWrapping.Wrap
+        });
+        content.Children.Add(new TextBlock
+        {
+            Text = string.IsNullOrWhiteSpace(value) ? "--" : value,
+            Foreground = (Brush)FindResource("TextBrush"),
+            FontFamily = new System.Windows.Media.FontFamily("Consolas"),
+            FontSize = 15,
+            Margin = new Thickness(0, 6, 0, 0),
+            TextWrapping = TextWrapping.Wrap
+        });
+        card.Child = content;
+        panel.Children.Add(card);
+    }
+
+    private static IEnumerable<(string Path, string Value)> FlattenTradersUnionValues(JToken token, string path)
+    {
+        if (token is JObject obj)
+        {
+            if (!obj.Properties().Any())
+            {
+                yield return (path, "{}");
+                yield break;
+            }
+
+            foreach (var property in obj.Properties())
+            {
+                var propertyPath = string.IsNullOrWhiteSpace(path) ? property.Name : $"{path}.{property.Name}";
+                foreach (var field in FlattenTradersUnionValues(property.Value, propertyPath))
+                    yield return field;
+            }
+            yield break;
+        }
+
+        if (token is JArray array)
+        {
+            if (array.Count == 0)
+            {
+                yield return (path, "[]");
+                yield break;
+            }
+
+            for (var index = 0; index < array.Count; index++)
+            {
+                var itemPath = string.IsNullOrWhiteSpace(path) ? $"[{index + 1}]" : $"{path}[{index + 1}]";
+                foreach (var field in FlattenTradersUnionValues(array[index], itemPath))
+                    yield return field;
+            }
+            yield break;
+        }
+
+        yield return (path, JTokenToDisplayString(token));
+    }
+
+    private async void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.Source is TabControl && TradersUnionTab is not null && TradersUnionTab.IsSelected && !tradersUnionLoaded)
+            await LoadTradersUnionAsync();
+        else if (e.Source is TabControl && TradersUnionTechnicalTab is not null && TradersUnionTechnicalTab.IsSelected && !tradersUnionTechnicalLoaded)
+            await LoadTradersUnionTechnicalAsync();
+    }
 }
 
 

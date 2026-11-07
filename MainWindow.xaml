@@ -286,9 +286,13 @@
                                 <TextBox x:Name="BullishFactor_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
                                 <TextBox x:Name="BullishFactor_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72"/>
                                 <TextBlock Text="Мечи (Bearish) Фактори" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,4"/>
-                                <TextBox x:Name="SignalBearishFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
-                                <TextBlock Text="risk_factors" Style="{StaticResource CardLabelStyle}" Margin="0,12,0,4"/>
-                                <TextBox x:Name="SignalRiskFactorsText" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="58"/>
+                                <TextBox x:Name="BearishFactor_1" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="BearishFactor_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="BearishFactor_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72"/>
+                                <TextBlock Text="Risk Factors" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,4"/>
+                                <TextBox x:Name="RiskFactor_1" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="RiskFactor_2" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72" Margin="0,0,0,4"/>
+                                <TextBox x:Name="RiskFactor_3" Text="--" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="72"/>
 
                                 <TextBlock Text="Trade Levels" Style="{StaticResource CardLabelStyle}" FontFamily="Consolas" FontSize="20" Foreground="Black" Margin="0,12,0,6"/>
                                 <Grid>
@@ -315,6 +319,40 @@
                                         <TextBox x:Name="SignalRiskRewardRatioText" Text="--" IsReadOnly="True"/>
                                     </StackPanel>
                                 </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="TradersUnionTab" Header="TU индикатори" Foreground="Black">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="TRADERS UNION · QUOTE INDICATORS" Style="{StaticResource CardLabelStyle}"/>
+                                <TextBlock Text="Заявка към quotes.tradersunion.com за всеки индикатор в отделно поле." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                <DockPanel Margin="0,0,0,10">
+                                    <Button x:Name="LoadTradersUnionButton" Content="Зареди индикаторите" Click="LoadTradersUnion_Click" DockPanel.Dock="Right" Width="170"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Symbol ID" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBox x:Name="TradersUnionSymbolBox" Text="775" Width="100" Margin="0,4,12,8"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <TextBlock x:Name="TradersUnionRequestText" Text="Готово за заявка" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                                <WrapPanel x:Name="TradersUnionIndicatorsPanel"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </TabItem>
+                    <TabItem x:Name="TradersUnionTechnicalTab" Header="TU технически анализ" Foreground="Black">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="4">
+                            <StackPanel Margin="8">
+                                <TextBlock Text="TRADERS UNION · DETAILED TECHNICAL ANALYSIS" Style="{StaticResource CardLabelStyle}"/>
+                                <TextBlock Text="Подробна техническа информация от endpoint-а за избрания symbol." Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                <DockPanel Margin="0,0,0,10">
+                                    <Button x:Name="LoadTradersUnionTechnicalButton" Content="Зареди анализа" Click="LoadTradersUnionTechnical_Click" DockPanel.Dock="Right" Width="150"/>
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="Symbol ID" Foreground="{StaticResource MutedBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                        <TextBox x:Name="TradersUnionTechnicalSymbolBox" Text="775" Width="100" Margin="0,4,12,8"/>
+                                    </StackPanel>
+                                </DockPanel>
+                                <TextBlock x:Name="TradersUnionTechnicalRequestText" Text="Готово за заявка" Foreground="{StaticResource MutedBrush}" FontSize="11" Margin="0,0,0,12" TextWrapping="Wrap"/>
+                                <WrapPanel x:Name="TradersUnionTechnicalIndicatorsPanel"/>
                             </StackPanel>
                         </ScrollViewer>
                     </TabItem>
