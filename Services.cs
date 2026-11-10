@@ -129,11 +129,59 @@ public sealed class GoldDeskService
         return output.OrderBy(x => x.Timestamp).ToList();
     }
     private static decimal ReadDecimal(JToken value, decimal fallback) => value.Type == JTokenType.Float || value.Type == JTokenType.Integer ? value.Value<decimal>() : decimal.TryParse(value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out var parsed) ? parsed : fallback;
-    private IReadOnlyList<ForecastPoint> BuildForecasts(GoldPrice price) { if (marketHistory.Count == 0) return []; var daily = marketHistory.TakeLast(Math.Min(48, marketHistory.Count)).ToList(); var weekly = marketHistory.TakeLast(Math.Min(192, marketHistory.Count)).ToList(); return [BuildForecast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 24 пїЅпїЅпїЅпїЅ", price.Price, daily), BuildForecast("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ", price.Price, weekly)]; }
-    private static ForecastPoint BuildForecast(string horizon, decimal current, List<MarketCandle> candles) { var range = candles.Count == 0 ? current * .01m : candles.Max(x => x.High) - candles.Min(x => x.Low); var drift = candles.Count < 2 ? 0 : (candles[^1].Close - candles[0].Close) / candles[0].Close; var scale = horizon.Contains("седмица", StringComparison.OrdinalIgnoreCase) ? .55m : .22m; var center = current * (1 + Math.Clamp(drift, -.04m, .04m) * scale); var halfRange = Math.Max(current * (horizon.Contains("седмица", StringComparison.OrdinalIgnoreCase) ? .006m : .0025m), range * scale); return new ForecastPoint(horizon, center - halfRange, center + halfRange, center, (center - current) / current * 100, DateTime.Now); }
+    private IReadOnlyList<ForecastPoint> BuildForecasts(GoldPrice price)
+    {
+        if (marketHistory.Count == 0) return [];
+        var daily = marketHistory.TakeLast(Math.Min(48, marketHistory.Count)).ToList();
+        var weekly = marketHistory.TakeLast(Math.Min(192, marketHistory.Count)).ToList();
+        // Stable internal keys prevent localized UI text/encoding from breaking the lookup.
+        return [BuildForecast("24h", price.Price, daily), BuildForecast("1w", price.Price, weekly)];
+    }
+
+    private static ForecastPoint BuildForecast(string horizon, decimal current, List<MarketCandle> candles)
+    {
+        var isWeekly = horizon == "1w";
+        var range = candles.Count == 0 ? current * .01m : candles.Max(x => x.High) - candles.Min(x => x.Low);
+        var drift = candles.Count < 2 ? 0 : (candles[^1].Close - candles[0].Close) / candles[0].Close;
+        var scale = isWeekly ? .55m : .22m;
+        var center = current * (1 + Math.Clamp(drift, -.04m, .04m) * scale);
+        var halfRange = Math.Max(current * (isWeekly ? .006m : .0025m), range * scale);
+        return new ForecastPoint(horizon, center - halfRange, center + halfRange, center, (center - current) / current * 100, DateTime.Now);
+    }
     private static List<MarketCandle> ReadHistory(JObject result) { var timestamps = result["timestamp"]?.Values<long>().ToArray() ?? []; var quote = result["indicators"]?["quote"]?[0]; if (quote is null) return []; var opens = quote["open"]?.ToArray() ?? []; var highs = quote["high"]?.ToArray() ?? []; var lows = quote["low"]?.ToArray() ?? []; var closes = quote["close"]?.ToArray() ?? []; var count = new[] { timestamps.Length, opens.Length, highs.Length, lows.Length, closes.Length }.Min(); var history = new List<MarketCandle>(count); for (var i = 0; i < count; i++) { if (opens[i].Type == JTokenType.Null || highs[i].Type == JTokenType.Null || lows[i].Type == JTokenType.Null || closes[i].Type == JTokenType.Null) continue; var timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamps[i]).LocalDateTime; history.Add(new MarketCandle(timestamp, opens[i].Value<decimal>(), highs[i].Value<decimal>(), lows[i].Value<decimal>(), closes[i].Value<decimal>())); } return history; }
     private string BuildBriefing(GoldPrice price, Signal signal, int newsCount, int bullish, int bearish) => $"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\nпїЅпїЅпїЅ {price.UpdatedAt:dd MMMM yyyy пїЅ.} пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ {price.Price:0.00} USD ({price.Symbol}), пїЅ {(price.ChangePct ?? 0):0.00}% пїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ{ActionLabel(signal.Action)}пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ {signal.Confidence}%.\n\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ {price.Source}; пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ {newsCount} пїЅпїЅпїЅпїЅпїЅпїЅ: {bullish} пїЅпїЅпїЅпїЅ пїЅ {bearish} пїЅпїЅпїЅпїЅ.\n\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ RSS пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.";
-    public async Task GenerateAnalysisAsync(GoldPrice price) { var recent = News.Take(40).ToList(); var bull = recent.Count(n => n.Sentiment == "bullish"); var bear = recent.Count(n => n.Sentiment == "bearish"); var action = bull > bear + 1 ? "buy" : bear > bull + 1 ? "sell" : "hold"; var confidence = Math.Min(92, 52 + Math.Abs(bull - bear) * 8); var levels = LocalSignalCalculator.Calculate(price.Price, marketHistory); CurrentSignal = new Signal { Levels = levels, Action = action, Confidence = confidence, Risk = confidence > 75 ? "medium" : "high", Rationale = $"Анализирани са {recent.Count} новини: {bull} бичи и {bear} мечи. Текущата цена е {price.Price:0.00}.", KeyFactors = [$"Настроение: {bull} бичи / {bear} мечи", $"Източник на цената: {price.Source}", $"Локални нива: {marketHistory.Count} OHLC свещи", "Локален детерминиран анализ"], Invalidation = "Неочаквани макроикономически данни или обръщане на индекса на щатския долар." }; Briefing = BuildBriefing(price, CurrentSignal, recent.Count, bull, bear); await Task.CompletedTask; }
+    public async Task GenerateAnalysisAsync(GoldPrice price)
+    {
+        var recent = News.Take(40).ToList();
+        var bull = recent.Count(n => n.Sentiment == "bullish");
+        var bear = recent.Count(n => n.Sentiment == "bearish");
+        var newsScore = bull - bear;
+        var technicalScore = 0;
+        decimal trendPct = 0;
+        if (marketHistory.Count >= 2)
+        {
+            var window = marketHistory.TakeLast(Math.Min(20, marketHistory.Count)).ToList();
+            trendPct = (window[^1].Close - window[0].Close) / window[0].Close * 100;
+            if (trendPct >= 0.15m) technicalScore = 1;
+            else if (trendPct <= -0.15m) technicalScore = -1;
+        }
+        var score = newsScore + technicalScore;
+        var action = score > 0 ? "buy" : score < 0 ? "sell" : "hold";
+        var confidence = Math.Min(92, 52 + Math.Min(4, Math.Abs(score)) * 8 + (technicalScore != 0 ? 4 : 0));
+        var levels = LocalSignalCalculator.Calculate(price.Price, marketHistory);
+        CurrentSignal = new Signal
+        {
+            Levels = levels,
+            Action = action,
+            Confidence = confidence,
+            Risk = confidence > 75 ? "medium" : "high",
+            Rationale = $"Анализирани са {recent.Count} новини: {bull} бичи и {bear} мечи. Технически тренд: {trendPct:+0.00;-0.00;0.00}%.",
+            KeyFactors = [$"Настроение: {bull} бичи / {bear} мечи", $"Технически тренд: {trendPct:+0.00;-0.00;0.00}%", $"Източник на цената: {price.Source}", $"Локални нива: {marketHistory.Count} OHLC свещи", "Локален детерминиран анализ"],
+            Invalidation = "Неочаквани макроикономически данни или обръщане на индекса на щатския долар."
+        };
+        Briefing = BuildBriefing(price, CurrentSignal, recent.Count, bull, bear);
+        await Task.CompletedTask;
+    }
     public async Task AnalyzeManualAsync(string text) { if (text.Length < 8) throw new InvalidOperationException("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ."); var lower = text.ToLowerInvariant(); var bull = new[] { "rise", "gain", "strong", "buy", "пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅпїЅ" }.Count(x => lower.Contains(x)); var bear = new[] { "fall", "drop", "weak", "sell", "пїЅпїЅпїЅпїЅ", "пїЅпїЅпїЅпїЅ" }.Count(x => lower.Contains(x)); News.Insert(0, new NewsItem { Source = "пїЅпїЅпїЅпїЅпїЅ", Title = text.Split('\n', '.', StringSplitOptions.RemoveEmptyEntries)[0].Trim()[..Math.Min(140, text.Length)], Url = "manual://" + Guid.NewGuid(), PublishedAt = DateTime.Now, Sentiment = bull > bear ? "bullish" : bear > bull ? "bearish" : "neutral", Impact = Math.Min(5, Math.Max(1, Math.Abs(bull - bear) + 1)), Summary = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ." }); await Task.CompletedTask; }
     public static string ActionLabel(string a) => a == "buy" ? "КУПУВАЙ" : a == "sell" ? "ПРОДАВАЙ" : "ИЗЧАКАЙ";
 }

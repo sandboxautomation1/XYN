@@ -28,3 +28,5 @@ E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.csproj.Up2Date
 E:\Projects_MT5\XYN\obj\Debug\net10.0-windows\XYN.csproj.AssemblyReference.cache
 E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\Newtonsoft.Json.dll
 E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\RestSharp.dll
+E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\Wpf.Ui.dll
+E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\Wpf.Ui.Abstractions.dll

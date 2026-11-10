@@ -26,7 +26,7 @@ public partial class MainWindow : Window
     private bool isChangingTimeframe;
     private bool tradersUnionLoaded;
     private bool tradersUnionTechnicalLoaded;
-    private string selectedTimeframe = "H1";
+    private string selectedTimeframe = "M30";
     private string selectedSymbol = "XAUUSD.p";
 
     public MainWindow() : this(new GoldDeskService()) { }
@@ -269,8 +269,8 @@ public partial class MainWindow : Window
         LowText.Text = snapshot?.Low.ToString("0.00") ?? "--";
         CloseText.Text = snapshot?.Close.ToString("0.00") ?? price.Price.ToString("0.00");
         LastUpdatedText.Text = $"{price.Source}   ·   последно обновяване {price.UpdatedAt:HH:mm:ss}";
-        var daily = service.Forecasts.FirstOrDefault(x => x.Horizon.Contains("24"));
-        var weekly = service.Forecasts.FirstOrDefault(x => x.Horizon.Contains("седмица"));
+        var daily = service.Forecasts.FirstOrDefault(x => x.Horizon == "24h");
+        var weekly = service.Forecasts.FirstOrDefault(x => x.Horizon == "1w");
         DailyRangeText.Text = daily is null ? "--" : $"{daily.Low:0.00} – {daily.High:0.00}";
         DailyAverageText.Text = daily is null ? "Средно: --" : $"Средно: {daily.Average:0.00} ({daily.ChangePct:+0.00;-0.00;0.00}%)";
         WeeklyRangeText.Text = weekly is null ? "--" : $"{weekly.Low:0.00} – {weekly.High:0.00}";
@@ -749,6 +749,12 @@ public partial class MainWindow : Window
 
     private void AddIndicatorField(Panel panel, string name, string value)
     {
+        var displayName = name;
+        foreach (var prefix in new[] { "data.", "m5." })
+        {
+            if (displayName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                displayName = displayName[prefix.Length..];
+        }
         var card = new Border
         {
             Width = 260,
@@ -759,7 +765,7 @@ public partial class MainWindow : Window
         var content = new StackPanel();
         content.Children.Add(new TextBlock
         {
-            Text = name,
+            Text = displayName,
             Foreground = (Brush)FindResource("MutedBrush"),
             FontSize = 10,
             FontWeight = FontWeights.SemiBold,

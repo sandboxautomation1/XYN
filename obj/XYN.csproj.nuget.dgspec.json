@@ -54,11 +54,15 @@
           "dependencies": {
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[13.0.1, )"
+              "version": "[13.0.4, )"
             },
             "RestSharp": {
               "target": "Package",
-              "version": "[112.1.0, )"
+              "version": "[114.1.0, )"
+            },
+            "WPF-UI": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>XYN</id>
+    <version>1.0.0</version>
+    <authors>XYN</authors>
+    <description>Package Description</description>
+    <repository type="git" commit="27c8c07f4bb94ebb2909dac11edbc2cc995de809" />
+    <dependencies>
+      <group targetFramework="net10.0-windows7.0">
+        <dependency id="ModernWpfUI" version="0.9.6" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
+        <dependency id="RestSharp" version="112.1.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net10.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.runtimeconfig.json" target="lib\net10.0-windows7.0\XYN.runtimeconfig.json" />
+    <file src="E:\Projects_MT5\XYN\bin\Debug\net10.0-windows\XYN.dll" target="lib\net10.0-windows7.0\XYN.dll" />
+  </files>
+</package>
