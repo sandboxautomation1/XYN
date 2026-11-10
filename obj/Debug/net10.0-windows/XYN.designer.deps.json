@@ -5,72 +5,7 @@
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v10.0": {
-      "Newtonsoft.Json/13.0.4": {
-        "runtime": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
-            "fileVersion": "13.0.4.30916"
-          }
-        }
-      },
-      "RestSharp/114.1.0": {
-        "runtime": {
-          "lib/net10.0/RestSharp.dll": {
-            "assemblyVersion": "114.1.0.0",
-            "fileVersion": "114.1.0.0"
-          }
-        }
-      },
-      "WPF-UI/4.3.0": {
-        "dependencies": {
-          "WPF-UI.Abstractions": "4.3.0"
-        },
-        "runtime": {
-          "lib/net10.0-windows7.0/Wpf.Ui.dll": {
-            "assemblyVersion": "4.3.0.0",
-            "fileVersion": "4.3.0.0"
-          }
-        }
-      },
-      "WPF-UI.Abstractions/4.3.0": {
-        "runtime": {
-          "lib/net10.0/Wpf.Ui.Abstractions.dll": {
-            "assemblyVersion": "4.3.0.0",
-            "fileVersion": "4.3.0.0"
-          }
-        }
-      }
-    }
+    ".NETCoreApp,Version=v10.0": {}
   },
-  "libraries": {
-    "Newtonsoft.Json/13.0.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-pdgNNMai3zv51W5aq268sujXUyx7SNdE2bj1wZcWjAQrKMFZV260lbqYop1d2GM67JI1huLRwxo9ZqnfF/lC6A==",
-      "path": "newtonsoft.json/13.0.4",
-      "hashPath": "newtonsoft.json.13.0.4.nupkg.sha512"
-    },
-    "RestSharp/114.1.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-QXpO6o0lKmbzBPhLZ1nBiZj9Vdb/3qRTyo0s0Vllm9HRLzpD2X+I9tkhGE4WWno6WyUkRsVP1jnyvDyQ5SakGg==",
-      "path": "restsharp/114.1.0",
-      "hashPath": "restsharp.114.1.0.nupkg.sha512"
-    },
-    "WPF-UI/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-SIHhc8lIrhEQ/1cLFZN6Dtf8cqsLm4myBULj9obnacd9TyDs2vizhKYzRzTlcPEcnzb3L4EstvPN3M6kcXbJCA==",
-      "path": "wpf-ui/4.3.0",
-      "hashPath": "wpf-ui.4.3.0.nupkg.sha512"
-    },
-    "WPF-UI.Abstractions/4.3.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-7Kj9DmCCo4SOCd1jAiw4+EcMFP2nR8rLLvitAYzVtzbWToTsodkbie24+8x9C4LDLxkopWEUGX62szqqNy7oeg==",
-      "path": "wpf-ui.abstractions/4.3.0",
-      "hashPath": "wpf-ui.abstractions.4.3.0.nupkg.sha512"
-    }
-  }
+  "libraries": {}
 }

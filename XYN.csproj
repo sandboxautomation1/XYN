@@ -9,9 +9,14 @@
     <RootNamespace>XYN</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="RestSharp" Version="114.1.0" />
-    <PackageReference Include="WPF-UI" Version="4.3.0" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>bin\Debug\net10.0-windows\Newtonsoft.Json.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>bin\Debug\net10.0-windows\RestSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
   </ItemGroup>
 </Project>
 

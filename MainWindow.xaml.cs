@@ -51,18 +51,29 @@ public partial class MainWindow : Window
     {
         try
         {
-            ProviderBox.SelectedIndex = 0;
-            selectedSymbol = string.IsNullOrWhiteSpace(service.Sources.Symbol) ? "XAUUSD.p" : service.Sources.Symbol.Trim();
+            ProviderBox.SelectedIndex = service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase) ? 0 : 1;
+            selectedSymbol = string.IsNullOrWhiteSpace(service.Sources.Symbol) ? "XAU/USD" : service.Sources.Symbol.Trim();
             SymbolInputBox.Text = selectedSymbol;
             SymbolBox.Text = selectedSymbol;
-            PriceUrlBox.Text = "MT5 bridge: http://127.0.0.1:8000";
-            TwelveDataKeyBox.Password = string.Empty;
-            IntervalBox.Text = selectedTimeframe;
+            PriceUrlBox.Text = service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase) ? "https://api.twelvedata.com/time_series" : "MT5 bridge: http://127.0.0.1:8000";
+            TwelveDataKeyBox.Password = service.Sources.TwelveDataApiKey;
+            IntervalBox.Text = service.Sources.TwelveDataInterval;
             FeedsBox.Text = string.Join(Environment.NewLine, service.Sources.Feeds.Select(x => x.Url));
             DefaultNewsBox.IsChecked = service.Sources.UseDefaultNews;
 
             try
             {
+                if (service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase))
+                {
+                    var twelvePrice = await service.RefreshTwelveDataAsync();
+                    await service.GenerateAnalysisAsync(twelvePrice);
+                    UpdatePrice(twelvePrice);
+                    Render();
+                    ChartMetaText.Text = $"Twelve Data  ·  {service.Sources.TwelveDataInterval}  ·  динамични OHLC";
+                    isInitialized = true;
+                    return;
+                }
+
                 await mt5Bridge.StartAsync(selectedSymbol, selectedTimeframe, 100);
                 var price = service.CurrentMt5Price ?? throw new InvalidOperationException("MT5 не върна live tick за XAUUSD.");
                 await service.GenerateAnalysisAsync(price);
@@ -73,8 +84,9 @@ public partial class MainWindow : Window
             }
             catch (Exception ex)
             {
-                ChartMetaText.Text = $"MT5 не е достъпен: {ex.Message}";
-                PriceMeta.Text = "Няма live данни от MT5";
+                var providerLabel = service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase) ? "Twelve Data" : "MT5";
+                ChartMetaText.Text = $"{providerLabel} не е достъпен: {ex.Message}";
+                PriceMeta.Text = $"Няма live данни от {providerLabel}";
                 isInitialized = false;
             }
         }
@@ -245,7 +257,11 @@ public partial class MainWindow : Window
         try
         {
             if (includeNews) await service.RefreshNewsAsync();
-            var price = service.CurrentMt5Price ?? throw new InvalidOperationException("Няма live цена от MT5. Проверете дали MT5 terminal и bridge-ът работят.");
+            GoldPrice price;
+            if (service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase))
+                price = await service.RefreshTwelveDataAsync();
+            else
+                price = service.CurrentMt5Price ?? throw new InvalidOperationException("Няма live цена от MT5. Проверете дали MT5 terminal и bridge-ът работят.");
             await service.GenerateAnalysisAsync(price);
             UpdatePrice(price);
             Render();
@@ -269,20 +285,25 @@ public partial class MainWindow : Window
         LowText.Text = snapshot?.Low.ToString("0.00") ?? "--";
         CloseText.Text = snapshot?.Close.ToString("0.00") ?? price.Price.ToString("0.00");
         LastUpdatedText.Text = $"{price.Source}   ·   последно обновяване {price.UpdatedAt:HH:mm:ss}";
-        var daily = service.Forecasts.FirstOrDefault(x => x.Horizon == "24h");
-        var weekly = service.Forecasts.FirstOrDefault(x => x.Horizon == "1w");
-        DailyRangeText.Text = daily is null ? "--" : $"{daily.Low:0.00} – {daily.High:0.00}";
-        DailyAverageText.Text = daily is null ? "Средно: --" : $"Средно: {daily.Average:0.00} ({daily.ChangePct:+0.00;-0.00;0.00}%)";
-        WeeklyRangeText.Text = weekly is null ? "--" : $"{weekly.Low:0.00} – {weekly.High:0.00}";
-        WeeklyAverageText.Text = weekly is null ? "Средно: --" : $"Средно: {weekly.Average:0.00} ({weekly.ChangePct:+0.00;-0.00;0.00}%)";
-        ShortTermRangeText.Text = daily is null ? "--" : $"{daily.Low:0.00} – {daily.High:0.00}";
-        ShortTermAverageText.Text = daily is null ? "Средно: --" : $"Средно: {daily.Average:0.00}";
-        ShortTermChangeText.Text = daily is null ? "Промяна: --" : $"Промяна: {daily.ChangePct:+0.00;-0.00;0.00}%";
-        ShortTermChangeText.Foreground = daily is null || daily.ChangePct >= 0 ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A")) : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"));
-        LongTermRangeText.Text = weekly is null ? "--" : $"{weekly.Low:0.00} – {weekly.High:0.00}";
-        LongTermAverageText.Text = weekly is null ? "Средно: --" : $"Средно: {weekly.Average:0.00}";
-        LongTermChangeText.Text = weekly is null ? "Промяна: --" : $"Промяна: {weekly.ChangePct:+0.00;-0.00;0.00}%";
-        LongTermChangeText.Foreground = weekly is null || weekly.ChangePct >= 0 ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A")) : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"));
+        var f30 = service.Forecasts.FirstOrDefault(x => x.Horizon == "30m");
+        var f1h = service.Forecasts.FirstOrDefault(x => x.Horizon == "1h");
+        var f4h = service.Forecasts.FirstOrDefault(x => x.Horizon == "4h");
+        DailyRangeText.Text = f30 is null ? "--" : $"{f30.Low:0.00} – {f30.High:0.00}";
+        DailyAverageText.Text = f30 is null ? "Средно: --" : $"Средно: {f30.Average:0.00} ({f30.ChangePct:+0.00;-0.00;0.00}%)";
+        WeeklyRangeText.Text = f1h is null ? "--" : $"{f1h.Low:0.00} – {f1h.High:0.00}";
+        WeeklyAverageText.Text = f1h is null ? "Средно: --" : $"Средно: {f1h.Average:0.00} ({f1h.ChangePct:+0.00;-0.00;0.00}%)";
+        ShortTermRangeText.Text = f30 is null ? "--" : $"{f30.Low:0.00} – {f30.High:0.00}";
+        ShortTermAverageText.Text = f30 is null ? "Средно: --" : $"Средно: {f30.Average:0.00}";
+        ShortTermChangeText.Text = f30 is null ? "Промяна: --" : $"Промяна: {f30.ChangePct:+0.00;-0.00;0.00}%";
+        ShortTermChangeText.Foreground = f30 is null || f30.ChangePct >= 0 ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A")) : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"));
+        LongTermRangeText.Text = f1h is null ? "--" : $"{f1h.Low:0.00} – {f1h.High:0.00}";
+        LongTermAverageText.Text = f1h is null ? "Средно: --" : $"Средно: {f1h.Average:0.00}";
+        LongTermChangeText.Text = f1h is null ? "Промяна: --" : $"Промяна: {f1h.ChangePct:+0.00;-0.00;0.00}%";
+        LongTermChangeText.Foreground = f1h is null || f1h.ChangePct >= 0 ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A")) : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"));
+        FourHourRangeText.Text = f4h is null ? "--" : $"{f4h.Low:0.00} – {f4h.High:0.00}";
+        FourHourAverageText.Text = f4h is null ? "Средно: --" : $"Средно: {f4h.Average:0.00}";
+        FourHourChangeText.Text = f4h is null ? "Промяна: --" : $"Промяна: {f4h.ChangePct:+0.00;-0.00;0.00}%";
+        FourHourChangeText.Foreground = f4h is null || f4h.ChangePct >= 0 ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A")) : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"));
         PriceChart.Candles = service.MarketHistory;
         PriceChart.CurrentPrice = price.Price;
         PriceChart.BuyAbove = service.CurrentSignal?.Levels.BuyAbove;
@@ -373,20 +394,22 @@ public partial class MainWindow : Window
     {
         try
         {
-            service.Sources.Provider = "mt5";
+            service.Sources.Provider = ProviderBox.SelectedIndex == 0 ? "twelve_data" : "mt5";
             var requestedSymbol = SymbolBox.Text.Trim();
             if (string.IsNullOrWhiteSpace(requestedSymbol))
-                throw new InvalidOperationException("Въведете MT5 символ.");
+                throw new InvalidOperationException("Въведете символ, например XAU/USD.");
             service.Sources.Symbol = requestedSymbol;
             selectedSymbol = requestedSymbol;
             SymbolInputBox.Text = selectedSymbol;
-            service.Sources.PriceUrl = "MT5 bridge: http://localhost:8000";
-            service.Sources.TwelveDataApiKey = string.Empty;
-            service.Sources.TwelveDataInterval = selectedTimeframe;
+            service.Sources.PriceUrl = service.Sources.Provider == "twelve_data" ? "https://api.twelvedata.com/time_series" : "MT5 bridge: http://localhost:8000";
+            service.Sources.TwelveDataApiKey = TwelveDataKeyBox.Password.Trim();
+            service.Sources.TwelveDataInterval = IntervalBox.Text.Trim();
             service.Sources.UseDefaultNews = DefaultNewsBox.IsChecked == true;
             service.Sources.Feeds = FeedsBox.Text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(x => new NewsFeed { Name = "Custom", Url = x.Trim() }).Where(x => Uri.TryCreate(x.Url, UriKind.Absolute, out _)).ToList();
             service.SaveSources();
-            var price = service.CurrentMt5Price ?? throw new InvalidOperationException("Настройките са запазени, но няма live цена от MT5.");
+            var price = service.Sources.Provider == "twelve_data"
+                ? await service.RefreshTwelveDataAsync()
+                : service.CurrentMt5Price ?? throw new InvalidOperationException("Настройките са запазени, но няма live цена от MT5.");
             await service.GenerateAnalysisAsync(price);
             UpdatePrice(price); Render();
             MessageBox.Show("Източниците са запазени и приложени.", "Gold Desk");

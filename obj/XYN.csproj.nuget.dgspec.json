@@ -51,20 +51,6 @@
         "net10.0-windows": {
           "framework": "net10.0-windows7.0",
           "targetAlias": "net10.0-windows",
-          "dependencies": {
-            "Newtonsoft.Json": {
-              "target": "Package",
-              "version": "[13.0.4, )"
-            },
-            "RestSharp": {
-              "target": "Package",
-              "version": "[114.1.0, )"
-            },
-            "WPF-UI": {
-              "target": "Package",
-              "version": "[4.3.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",

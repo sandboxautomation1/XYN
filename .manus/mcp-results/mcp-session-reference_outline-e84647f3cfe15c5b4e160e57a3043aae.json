@@ -1,0 +1,5 @@
+{
+  "server": "session-reference",
+  "tool": "outline",
+  "result": "# Outline: C# прогнози за XAUUSD на 30 минути, 1 и 4 часа\nAccess scope: owned\nSegments: 1\n\nSegment endpoints (use as start_segment_endpoint / end_segment_endpoint for read_conversation):\n(single segment — omit bounds to read all)"
+}

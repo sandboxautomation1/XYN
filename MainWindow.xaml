@@ -92,13 +92,14 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
+                            <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="0" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="0,0,6,0">
                             <StackPanel>
                                 <DockPanel>
                                     <TextBlock Text="SHORT-TERM " Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
                                 </DockPanel>
-                                <TextBlock Text="Следващите 24 часа" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
+                                <TextBlock Text="Следващите 30 минути" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
                                 <TextBlock x:Name="ShortTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
                                 <TextBlock x:Name="ShortTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="ShortTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
@@ -109,10 +110,19 @@
                                 <DockPanel>
                                     <TextBlock Text="LONG-TERM" Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
                                 </DockPanel>
-                                <TextBlock Text="Следващата седмица" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
+                                <TextBlock Text="Следващият 1 час" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
                                 <TextBlock x:Name="LongTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
                                 <TextBlock x:Name="LongTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="LongTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Grid.Column="2" Background="#25231F" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="7" Padding="10" Margin="12,0,0,0">
+                            <StackPanel>
+                                <TextBlock Text="4 HOURS" Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
+                                <TextBlock Text="Следващите 4 часа" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
+                                <TextBlock x:Name="FourHourRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="FourHourAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
+                                <TextBlock x:Name="FourHourChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -127,15 +137,15 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Grid.Column="0" Margin="0,0,6,0">
-                            <TextBlock Text="DAILY" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock Text="30 MIN" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
                             <TextBlock x:Name="DailyRangeText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="16"/>
-                            <TextBlock Text="24 часа" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
+                            <TextBlock Text="следващите 30 минути" Foreground="{StaticResource MutedBrush}" FontSize="10"/>
                             <TextBlock x:Name="DailyAverageText" Text="Средно: --" Foreground="{StaticResource TextBrush}" FontSize="10" Margin="0,5,0,0"/>
                         </StackPanel>
                         <StackPanel Grid.Column="1" Margin="6,0,0,0">
-                            <TextBlock Text="WEEKLY" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
+                            <TextBlock Text="1 HOUR" Foreground="{StaticResource GoldBrush}" FontSize="10" FontWeight="Bold"/>
                             <TextBlock x:Name="WeeklyRangeText" Text="--" Foreground="{StaticResource GoldBrush}" FontFamily="Consolas" FontSize="16"/>
-                            <TextBlock Text="следващата седмица" Foreground="{StaticResource MutedBrush}" FontSize="10" TextWrapping="Wrap"/>
+                            <TextBlock Text="следващият 1 час" Foreground="{StaticResource MutedBrush}" FontSize="10" TextWrapping="Wrap"/>
                             <TextBlock x:Name="WeeklyAverageText" Text="Средно: --" Foreground="{StaticResource TextBrush}" FontSize="10" Margin="0,5,0,0"/>
                         </StackPanel>
                     </Grid>
@@ -362,16 +372,25 @@
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel Margin="8">
                                 <TextBlock Text="Пазарни данни" FontWeight="SemiBold"/>
-                                <TextBlock Text="MT5 terminal · единствен източник за live price, bid/ask, OHLC, история и технически показатели" TextWrapping="Wrap" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
-                                <ComboBox x:Name="ProviderBox" Foreground="Black" IsEnabled="False">
-                                    <ComboBoxItem Content="MT5"/>
+                                <TextBlock Text="Twelve Data е основният динамичен източник за XAU/USD. MT5 остава наличен като алтернативен локален източник." TextWrapping="Wrap" Foreground="{StaticResource MutedBrush}" Margin="0,4,0,10"/>
+                                <ComboBox x:Name="ProviderBox" Foreground="Black">
+                                    <ComboBoxItem Content="Twelve Data · XAU/USD"/>
+                                    <ComboBoxItem Content="MT5 bridge"/>
                                 </ComboBox>
-                                <TextBlock Text="MT5 symbol"/>
-                                <TextBox x:Name="SymbolBox" Text="XAUUSD.p"/>
+                                <TextBlock Text="Symbol (Twelve Data: XAU/USD; MT5: XAUUSD.p)" Margin="0,8,0,0"/>
+                                <TextBox x:Name="SymbolBox" Text="XAU/USD"/>
+                                <TextBlock Text="Twelve Data API key" Margin="0,8,0,0"/>
+                                <PasswordBox x:Name="TwelveDataKeyBox"/>
+                                <TextBlock Text="Свещи за API заявката" Margin="0,8,0,0"/>
+                                <ComboBox x:Name="IntervalBox" Foreground="Black">
+                                    <ComboBoxItem Content="1min"/>
+                                    <ComboBoxItem Content="5min" IsSelected="True"/>
+                                    <ComboBoxItem Content="15min"/>
+                                    <ComboBoxItem Content="30min"/>
+                                    <ComboBoxItem Content="1h"/>
+                                </ComboBox>
                                 <TextBox x:Name="PriceUrlBox" Visibility="Collapsed"/>
-                                <PasswordBox x:Name="TwelveDataKeyBox" Visibility="Collapsed"/>
-                                <TextBox x:Name="IntervalBox" Visibility="Collapsed"/>
-                                <TextBlock Text="RSS feeds (one per line)"/>
+                                <TextBlock Text="RSS feeds (one per line)" Margin="0,8,0,0"/>
                                 <TextBox x:Name="FeedsBox" AcceptsReturn="True" Height="90"/>
                                 <CheckBox x:Name="DefaultNewsBox" Content="Зареждай автоматично Google News новини" IsChecked="True"/>
                                 <Button Content="Запази и приложи" Click="SaveSources_Click" Width="180" HorizontalAlignment="Left"/>
