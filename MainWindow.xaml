@@ -100,7 +100,7 @@
                                     <TextBlock Text="SHORT-TERM " Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
                                 </DockPanel>
                                 <TextBlock Text="Следващите 30 минути" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
-                                <TextBlock x:Name="ShortTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="ShortTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="15" FontWeight="Bold"/>
                                 <TextBlock x:Name="ShortTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="ShortTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
                             </StackPanel>
@@ -111,7 +111,7 @@
                                     <TextBlock Text="LONG-TERM" Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
                                 </DockPanel>
                                 <TextBlock Text="Следващият 1 час" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
-                                <TextBlock x:Name="LongTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="LongTermRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="15" FontWeight="Bold"/>
                                 <TextBlock x:Name="LongTermAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="LongTermChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
                             </StackPanel>
@@ -120,7 +120,7 @@
                             <StackPanel>
                                 <TextBlock Text="4 HOURS" Foreground="{StaticResource GoldBrush}" FontSize="11" FontWeight="Bold"/>
                                 <TextBlock Text="Следващите 4 часа" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,3,0,8"/>
-                                <TextBlock x:Name="FourHourRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="17" FontWeight="Bold"/>
+                                <TextBlock x:Name="FourHourRangeText" Text="--" Foreground="{StaticResource TextBrush}" FontFamily="Consolas" FontSize="15" FontWeight="Bold"/>
                                 <TextBlock x:Name="FourHourAverageText" Text="Средно: --" Foreground="{StaticResource MutedBrush}" FontSize="10" Margin="0,5,0,0"/>
                                 <TextBlock x:Name="FourHourChangeText" Text="Промяна: --" Foreground="{StaticResource BullBrush}" FontSize="10"/>
                             </StackPanel>

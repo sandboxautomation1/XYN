@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "E:\\Projects_MT5\\XYN\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
@@ -22,24 +26,37 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAuwCwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-10T12:22:38.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Services.cs",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Services.cs",
               "RelativeDocumentMoniker": "Services.cs",
               "ToolTip": "E:\\Projects_MT5\\XYN\\Services.cs",
               "RelativeToolTip": "Services.cs",
-              "ViewState": "AgIAAGAAAAAAAAAAAAAlwIMAAAA7AAAAAAAAAA==",
+              "ViewState": "AgIAAMcAAAAAAAAAAAAowA0BAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-11-10T09:28:39.19Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
@@ -51,7 +68,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "App.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",
