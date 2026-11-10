@@ -17,6 +17,7 @@ public partial class MainWindow : Window
     private static readonly RestClient tradersUnionClient = new(new RestClientOptions("https://quotes.tradersunion.com") { Timeout = TimeSpan.FromSeconds(20) });
     private static readonly RestClient bridgeHealthClient = new(new RestClientOptions("http://127.0.0.1:8000") { Timeout = TimeSpan.FromSeconds(2) });
     private readonly GoldDeskService service;
+    private readonly GeneratedSignalsTabController generatedSignalsTab;
     private readonly Mt5BridgeClient mt5Bridge = new();
     private Process? mt5ServerProcess;
 
@@ -34,6 +35,7 @@ public partial class MainWindow : Window
     public MainWindow(GoldDeskService service)
     {
         this.service = service;
+        generatedSignalsTab = new GeneratedSignalsTabController(service);
         InitializeComponent();
         ProviderBox.SelectedIndex = 0;
         mt5Bridge.OhlcReceived += OnMt5Ohlc;
@@ -55,6 +57,7 @@ public partial class MainWindow : Window
             selectedSymbol = string.IsNullOrWhiteSpace(service.Sources.Symbol) ? "XAU/USD" : service.Sources.Symbol.Trim();
             SymbolInputBox.Text = selectedSymbol;
             SymbolBox.Text = selectedSymbol;
+            SignalSymbolBox.Text = selectedSymbol.Replace("/", string.Empty);
             PriceUrlBox.Text = service.Sources.Provider.Equals("twelve_data", StringComparison.OrdinalIgnoreCase) ? "https://api.twelvedata.com/time_series" : "MT5 bridge: http://127.0.0.1:8000";
             TwelveDataKeyBox.Password = service.Sources.TwelveDataApiKey;
             IntervalBox.Text = service.Sources.TwelveDataInterval;
@@ -130,9 +133,9 @@ public partial class MainWindow : Window
             PriceMeta.Text = "Стартирам MT5 bridge на 127.0.0.1:8000…";
             ChartMetaText.Text = "MT5 bridge server  ·  uv run  ·  127.0.0.1:8000";
 
-            if (!await WaitForBridgeAsync())
+            if (!await WaitForBridgeAsync(mt5ServerProcess))
             {
-                ChartMetaText.Text = "MT5 bridge не отговори на http://127.0.0.1:8000/health";
+                ChartMetaText.Text = "MT5 bridge не стартира или не е правилната версия на http://127.0.0.1:8000";
                 PriceMeta.Text = "Bridge server-ът не е достъпен";
                 return;
             }
@@ -152,18 +155,24 @@ public partial class MainWindow : Window
         }
     }
 
-    private static async Task<bool> WaitForBridgeAsync()
+    private static async Task<bool> WaitForBridgeAsync(Process? process)
     {
         for (var attempt = 0; attempt < 20; attempt++)
         {
             try
             {
-                var response = await bridgeHealthClient.ExecuteAsync(new RestRequest("/health", Method.Get));
-                if (response.IsSuccessful) return true;
+                if (process is { HasExited: true }) return false;
+                var health = await bridgeHealthClient.ExecuteAsync(new RestRequest("/health", Method.Get));
+                if (!health.IsSuccessful) goto retry;
+
+                // /health alone can come from a stale or unrelated process on port 8000.
+                var version = await bridgeHealthClient.ExecuteAsync(new RestRequest("/version", Method.Get));
+                if (version.IsSuccessful) return true;
             }
             catch (HttpRequestException) { }
             catch (TaskCanceledException) { }
 
+        retry:
             await Task.Delay(500);
         }
 
@@ -417,7 +426,42 @@ public partial class MainWindow : Window
         catch (Exception ex) { MessageBox.Show("Източникът не може да бъде приложен: " + ex.Message, "Gold Desk", MessageBoxButton.OK, MessageBoxImage.Warning); }
     }
 
-    private void Logout_Click(object sender, RoutedEventArgs e) { service.Logout(); var loginWindow = new LoginWindow(service); Application.Current.MainWindow = loginWindow; loginWindow.Show(); Close(); }
+    private async void GenerateMarketSignal_Click(object sender, RoutedEventArgs e)
+    {
+        GenerateMarketSignalButton.IsEnabled = false;
+        GenerateMarketSignalButton.Content = "Зареждам данни…";
+        GeneratedSignalStatusText.Text = "Заявка за OHLC история към Twelve Data.";
+        try
+        {
+            var result = await generatedSignalsTab.GenerateAsync(SignalSymbolBox.Text.Trim());
+            var price = result.Price;
+            var plan = result.Plan;
+            GeneratedSignalActionText.Text = plan.Direction;
+            GeneratedSignalActionText.Foreground = plan.Direction == "BUY"
+                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#73D49A"))
+                : plan.Direction == "SELL"
+                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F17C65"))
+                    : new SolidColorBrush((Color)ColorConverter.ConvertFromString("#D4B35F"));
+            GeneratedSignalEntryText.Text = plan.Entry?.ToString("0.00") ?? "--";
+            GeneratedSignalStopText.Text = plan.StopLoss?.ToString("0.00") ?? "--";
+            GeneratedSignalTargetText.Text = plan.TakeProfit?.ToString("0.00") ?? "--";
+            GeneratedSignalDetailsText.Text = plan.Rationale;
+            GeneratedSignalStatusText.Text = $"{price.Symbol} · Twelve Data · {service.MarketHistory.Count} свещи · цена {price.Price:0.00} · генериран {plan.GeneratedAt:dd.MM.yyyy HH:mm:ss}";
+        }
+        catch (Exception ex)
+        {
+            GeneratedSignalActionText.Text = "ГРЕШКА";
+            GeneratedSignalEntryText.Text = GeneratedSignalStopText.Text = GeneratedSignalTargetText.Text = "--";
+            GeneratedSignalDetailsText.Text = ex.Message;
+            GeneratedSignalStatusText.Text = "Сигналът не е генериран. Проверете API key и настройките в „Източници“.";
+        }
+        finally
+        {
+            GenerateMarketSignalButton.IsEnabled = true;
+            GenerateMarketSignalButton.Content = "Обнови данните и генерирай сигнал";
+        }
+    }
+
 
     private async void AnalyzeSignal_Click(object sender, RoutedEventArgs e)
     {
@@ -854,5 +898,3 @@ public partial class MainWindow : Window
             await LoadTradersUnionTechnicalAsync();
     }
 }
-
-

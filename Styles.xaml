@@ -48,9 +48,9 @@
   </Style>
   
     <Style TargetType="TabItem">
-      <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
-      <Setter Property="Padding" Value="14,8"/>
-  </Style>
+        <Setter Property="Foreground" Value="{StaticResource TextBrush}"/>
+        <Setter Property="Padding" Value="14,8"/>
+    </Style>
   
     <Style x:Key="LevelCardStyle" TargetType="Border">
       <Setter Property="Background" Value="#25231F"/>
@@ -73,10 +73,17 @@
   
     <Style x:Key="CardLabelStyle" TargetType="TextBlock">
       <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
-      <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontFamily" Value="Sylfaen"/>
+        <Setter Property="FontSize" Value="15"/>
       <Setter Property="FontWeight" Value="SemiBold"/>
   </Style>
-    
+
+    <Style x:Key="LevelCardLabelStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource MutedBrush}"/>
+        <Setter Property="FontFamily" Value="Sylfaen"/>
+        <Setter Property="FontSize" Value="10"/>
+    </Style>
+
     <Style x:Key="ToolbarButtonStyle" TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="Cursor" Value="Hand"/>

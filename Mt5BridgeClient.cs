@@ -82,11 +82,11 @@ public sealed class Mt5BridgeClient : IAsyncDisposable
 
     private async Task PollOnceAsync(CancellationToken cancellationToken)
     {
-        var ratesRequest = new RestRequest("rates/{symbol}", Method.Get)
+        var ratesRequest = new RestRequest("/rates/{symbol}", Method.Get)
             .AddUrlSegment("symbol", symbol)
             .AddQueryParameter("timeframe", timeframe)
             .AddQueryParameter("count", count);
-        var tickRequest = new RestRequest("tick/{symbol}", Method.Get)
+        var tickRequest = new RestRequest("/tick/{symbol}", Method.Get)
             .AddUrlSegment("symbol", symbol);
 
         var ratesTask = client.ExecuteAsync(ratesRequest, cancellationToken);
@@ -116,7 +116,7 @@ public sealed class Mt5BridgeClient : IAsyncDisposable
     private static void EnsureSuccess(RestResponse response)
     {
         if (!response.IsSuccessful)
-            throw new HttpRequestException($"MT5 bridge returned HTTP {(int?)response.StatusCode ?? 0}: {response.ErrorMessage ?? response.Content}");
+            throw new HttpRequestException($"MT5 bridge returned HTTP {(int?)response.StatusCode ?? 0} for {response.ResponseUri}: {response.ErrorMessage ?? response.Content}");
     }
 
     private static DateTime UnixSecondsToLocalTime(long unixSeconds) => DateTimeOffset.FromUnixTimeSeconds(unixSeconds).LocalDateTime;

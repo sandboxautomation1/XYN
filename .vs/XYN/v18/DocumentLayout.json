@@ -3,20 +3,44 @@
   "WorkspaceRootPath": "E:\\Projects_MT5\\XYN\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\styles.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:styles.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mt5-bridge\\mt5_bridge\\main.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mt5-bridge\\mt5_bridge\\main.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mt5-bridge\\mt5_bridge\\mt5_handler.py||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mt5-bridge\\mt5_bridge\\mt5_handler.py||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\mt5bridgeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:mt5bridgeclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\xyn.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:xyn.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|e:\\projects_mt5\\xyn\\xyn.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B36B2CE7-2C76-4C72-8E7E-4AB5F81D0D1B}|XYN.csproj|solutionrelative:xyn.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,32 +50,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAACEAAAAAAAAAAAAuwCwAAAAcAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-10T12:22:38.901Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Services.cs",
-              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Services.cs",
-              "RelativeDocumentMoniker": "Services.cs",
-              "ToolTip": "E:\\Projects_MT5\\XYN\\Services.cs",
-              "RelativeToolTip": "Services.cs",
-              "ViewState": "AgIAAMcAAAAAAAAAAAAowA0BAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-11-10T09:28:39.19Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -60,13 +60,111 @@
               "RelativeDocumentMoniker": "MainWindow.xaml",
               "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAewOEAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-11-09T15:47:55.282Z",
+              "WhenOpened": "2026-11-10T20:09:37.279Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Styles.xaml",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Styles.xaml",
+              "RelativeDocumentMoniker": "Styles.xaml",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Styles.xaml",
+              "RelativeToolTip": "Styles.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-11-10T16:58:38.377Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "XYN",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\XYN.csproj",
+              "RelativeDocumentMoniker": "XYN.csproj",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\XYN.csproj",
+              "RelativeToolTip": "XYN.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-11-10T16:58:55.124Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Mt5BridgeClient.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeDocumentMoniker": "Mt5BridgeClient.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Mt5BridgeClient.cs",
+              "RelativeToolTip": "Mt5BridgeClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-10T17:01:03.724Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "XYN.csproj",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\XYN.csproj",
+              "RelativeDocumentMoniker": "XYN.csproj",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\XYN.csproj",
+              "RelativeToolTip": "XYN.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-11-10T16:58:32.213Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAAKgCAAAAAAAAAAAAAMABAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-10T12:22:38.901Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Services.cs",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\Services.cs",
+              "RelativeDocumentMoniker": "Services.cs",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\Services.cs",
+              "RelativeToolTip": "Services.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAqwFQAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-10T09:28:39.19Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "main.py",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\mt5-bridge\\mt5_bridge\\main.py",
+              "RelativeDocumentMoniker": "mt5-bridge\\mt5_bridge\\main.py",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\mt5-bridge\\mt5_bridge\\main.py",
+              "RelativeToolTip": "mt5-bridge\\mt5_bridge\\main.py",
+              "ViewState": "AgIAALsBAAAAAAAAAAApwOEBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-11-10T17:02:04.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "mt5_handler.py",
+              "DocumentMoniker": "E:\\Projects_MT5\\XYN\\mt5-bridge\\mt5_bridge\\mt5_handler.py",
+              "RelativeDocumentMoniker": "mt5-bridge\\mt5_bridge\\mt5_handler.py",
+              "ToolTip": "E:\\Projects_MT5\\XYN\\mt5-bridge\\mt5_bridge\\mt5_handler.py",
+              "RelativeToolTip": "mt5-bridge\\mt5_bridge\\mt5_handler.py",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAAEsAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.002457|",
+              "WhenOpened": "2026-11-10T17:02:21.443Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "App.xaml",
               "DocumentMoniker": "E:\\Projects_MT5\\XYN\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",

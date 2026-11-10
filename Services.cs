@@ -82,16 +82,7 @@ public sealed class GoldDeskService
         return request;
     }
 
-    public async Task<(bool Ok, string Message)> LoginAsync(string email, string password, bool signup)
-    {
-        var request = signup ? Request(Method.Post, "/auth/v1/signup", new { email, password }) : Request(Method.Post, "/auth/v1/token?grant_type=password", new { email, password });
-        var response = await http.ExecuteAsync(request);
-        var text = response.Content ?? string.Empty;
-        if (!response.IsSuccessful) return (false, signup ? "Регистрацията не успя. Проверете данните." : "Грешен имейл или парола.");
-        var json = JObject.Parse(text);
-        token = json.Value<string>("access_token");
-        return (true, signup && token == null ? "Проверете пощата си за потвърждение." : "");
-    }
+  
 
     public void Logout() => token = null;
 
@@ -115,7 +106,7 @@ public sealed class GoldDeskService
         if (string.IsNullOrWhiteSpace(apiKey))
             throw new InvalidOperationException("Въведете Twelve Data API key в таба „Източници“.");
 
-        var symbol = string.IsNullOrWhiteSpace(Sources.Symbol) ? "XAU/USD" : Sources.Symbol.Trim();
+        var symbol = SymbolUtility.NormalizeTwelveDataSymbol(string.IsNullOrWhiteSpace(Sources.Symbol) ? "XAUUSD" : Sources.Symbol);
         var interval = NormalizeTwelveInterval(Sources.TwelveDataInterval);
         var query = $"https://api.twelvedata.com/time_series?symbol={Uri.EscapeDataString(symbol)}&interval={Uri.EscapeDataString(interval)}&outputsize=288&timezone=UTC&apikey={Uri.EscapeDataString(apiKey)}";
         var text = await GetExternalStringAsync(query);
